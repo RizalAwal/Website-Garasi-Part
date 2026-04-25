@@ -137,3 +137,23 @@ footer {
         grid-template-columns: 1fr;
     }
 }
+#category-list li {
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+#category-list li:hover {
+    background-color: #f39c12;
+    color: white;
+    padding-left: 10px;
+}
+
+/* Class untuk menyembunyikan elemen */
+.filterDiv {
+    display: none; 
+}
+
+/* Class untuk memunculkan elemen */
+.show {
+    display: table-row;
+}
