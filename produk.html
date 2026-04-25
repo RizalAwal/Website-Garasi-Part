@@ -88,21 +88,54 @@
         </table>
     </main>
 
-    <aside>
-        <h3>Kategori Produk</h3>
-        <ul>
-            <li>Kaki-kaki & Suspensi</li>
-            <li>Transmisi & Penggerak</li>
-            <li>Pengereman</li>
-            <li>Mesin</li>
-            <li>Kelistrikan</li>
-        </ul>
-    </aside>
+   <aside>
+    <h3>Kategori Produk</h3>
+    <ul id="category-list">
+        <li onclick="filterSelection('all')">Semua Produk</li>
+        <li onclick="filterSelection('kaki-kaki')">Kaki-kaki & Suspensi</li>
+        <li onclick="filterSelection('transmisi')">Transmisi & Penggerak</li>
+        <li onclick="filterSelection('pengereman')">Pengereman</li>
+        <li onclick="filterSelection('mesin')">Mesin</li>
+        <li onclick="filterSelection('kelistrikan')">Kelistrikan</li>
+    </ul>
+</aside>
 
-    <footer>
-        <p>&copy; 2026 Ahmad Juniar (1325001)</p>
-    </footer>
-</div>
-
-</body>
-</html>
+<main>
+    <h2>Koleksi Suku Cadang Kami</h2>
+    <table class="product-table" id="myTable">
+        <thead>
+            <tr>
+                <th>Gambar</th>
+                <th>Nama Barang</th>
+                <th>Kategori</th>
+                <th>Harga Satuan</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr class="filterDiv mesin">
+                <td><img src="images/Oli Filter.jpg" class="product-img"></td>
+                <td>Oli Filter</td>
+                <td>Mesin</td>
+                <td>Rp 70.000</td>
+            </tr>
+            <tr class="filterDiv kelistrikan">
+                <td><img src="images/busi.jpg" class="product-img"></td>
+                <td>Busi Iridium</td>
+                <td>Kelistrikan</td>
+                <td>Rp 45.000</td>
+            </tr>
+            <tr class="filterDiv pengereman">
+                <td><img src="images/kampasrem.jpg" class="product-img"></td>
+                <td>Kampas Rem Depan</td>
+                <td>Pengereman</td>
+                <td>Rp 150.000</td>
+            </tr>
+            <tr class="filterDiv kaki-kaki">
+                <td><img src="images/ban.jpg" class="product-img"></td>
+                <td>Ban Mobil R15</td>
+                <td>Kaki-kaki & Suspensi</td>
+                <td>Rp 650.000</td>
+            </tr>
+        </tbody>
+    </table>
+</main>
