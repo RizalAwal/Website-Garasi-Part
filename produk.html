@@ -31,7 +31,7 @@
             border-radius: 4px;
         }
 
-        /* Style Sidebar Kategori Interaktif */
+        /* Style Sidebar Kategori */
         #category-list {
             list-style: none;
             padding: 0;
@@ -48,12 +48,12 @@
             padding-left: 15px;
         }
 
-        /* Logika Filter (Sembunyi/Muncul) */
+        /* Logika Filter CSS */
         .filterDiv {
-            display: none; /* Sembunyi secara default */
+            display: none; 
         }
         .show {
-            display: table-row; /* Muncul sebagai baris tabel */
+            display: table-row !important;
         }
     </style>
 </head>
@@ -85,29 +85,45 @@
                 </tr>
             </thead>
             <tbody>
-                <tr class="filterDiv mesin">
+                <tr class="filterDiv mesin show">
                     <td><img src="images/Oli Filter.jpg" alt="Oli Filter" class="product-img"></td>
                     <td>Oli Filter</td>
                     <td>Mesin</td>
                     <td>Rp 70.000</td>
                 </tr>
-                <tr class="filterDiv kelistrikan">
+                
+                <tr class="filterDiv kelistrikan show">
                     <td><img src="images/busi.jpg" alt="Busi" class="product-img"></td>
                     <td>Busi Iridium</td>
                     <td>Kelistrikan</td>
                     <td>Rp 45.000</td>
                 </tr>
-                <tr class="filterDiv pengereman">
+
+                <tr class="filterDiv pengereman show">
                     <td><img src="images/kampasrem.jpg" alt="Kampas Rem" class="product-img"></td>
                     <td>Kampas Rem Depan</td>
                     <td>Pengereman</td>
                     <td>Rp 150.000</td>
                 </tr>
-                <tr class="filterDiv kaki-kaki">
+
+                <tr class="filterDiv kaki-kaki show">
                     <td><img src="images/ban.jpg" alt="Ban" class="product-img"></td>
                     <td>Ban Mobil R15</td>
                     <td>Kaki-kaki & Suspensi</td>
                     <td>Rp 650.000</td>
+                </tr>
+
+                <tr class="filterDiv transmisi show">
+                    <td><img src="images/kopling.jpg" alt="Kampas Kopling" class="product-img"></td>
+                    <td>Kampas Kopling Set</td>
+                    <td>Transmisi & Penggerak</td>
+                    <td>Rp 1.200.000</td>
+                </tr>
+                <tr class="filterDiv transmisi show">
+                    <td><img src="images/oli-transmisi.jpg" alt="Oli Transmisi" class="product-img"></td>
+                    <td>Oli Transmisi Manual</td>
+                    <td>Transmisi & Penggerak</td>
+                    <td>Rp 95.000</td>
                 </tr>
             </tbody>
         </table>
@@ -131,7 +147,9 @@
 </div>
 
 <script>
+// Menjalankan filter 'all' saat pertama kali dimuat agar semua produk muncul
 filterSelection("all")
+
 function filterSelection(c) {
   var x, i;
   x = document.getElementsByClassName("filterDiv");
