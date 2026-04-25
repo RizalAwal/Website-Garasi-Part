@@ -6,7 +6,7 @@
     <title>Product - Garasi Part</title>
     <link rel="stylesheet" href="style1.css">
     <style>
-        /* Tambahan style khusus tabel produk agar lebih rapi */
+        /* Style Tabel Produk */
         .product-table {
             width: 100%;
             border-collapse: collapse;
@@ -30,6 +30,31 @@
             height: auto;
             border-radius: 4px;
         }
+
+        /* Style Sidebar Kategori Interaktif */
+        #category-list {
+            list-style: none;
+            padding: 0;
+        }
+        #category-list li {
+            padding: 10px;
+            border-bottom: 1px solid #eee;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+        #category-list li:hover {
+            background-color: #f39c12;
+            color: white;
+            padding-left: 15px;
+        }
+
+        /* Logika Filter (Sembunyi/Muncul) */
+        .filterDiv {
+            display: none; /* Sembunyi secara default */
+        }
+        .show {
+            display: table-row; /* Muncul sebagai baris tabel */
+        }
     </style>
 </head>
 <body>
@@ -40,17 +65,17 @@
         <p>Solusi Suku Cadang Otomotif Terpercaya</p>
     </header>
 
-   <nav>
-    <a href="index.html">Home</a>
-    <a href="produk.html">produk</a> 
-    <a href="contactus.html">Contact Us</a>
-</nav>
+    <nav>
+        <a href="index.html">Home</a>
+        <a href="produk.html">produk</a> 
+        <a href="contactus.html">Contact Us</a>
+    </nav>
 
     <main>
         <h2>Koleksi Suku Cadang Kami</h2>
-        <p>Berikut adalah daftar produk unggulan yang tersedia di Garasi Part. Kami hanya menyediakan barang dengan kualitas terbaik untuk kendaraan Anda.</p>
+        <p>Silakan klik kategori di samping untuk menyaring produk berdasarkan kebutuhan kendaraan Anda.</p>
         
-        <table class="product-table">
+        <table class="product-table" id="myTable">
             <thead>
                 <tr>
                     <th>Gambar</th>
@@ -60,25 +85,25 @@
                 </tr>
             </thead>
             <tbody>
-                <tr>
+                <tr class="filterDiv mesin">
                     <td><img src="images/Oli Filter.jpg" alt="Oli Filter" class="product-img"></td>
                     <td>Oli Filter</td>
                     <td>Mesin</td>
                     <td>Rp 70.000</td>
                 </tr>
-                <tr>
+                <tr class="filterDiv kelistrikan">
                     <td><img src="images/busi.jpg" alt="Busi" class="product-img"></td>
                     <td>Busi Iridium</td>
                     <td>Kelistrikan</td>
                     <td>Rp 45.000</td>
                 </tr>
-                <tr>
+                <tr class="filterDiv pengereman">
                     <td><img src="images/kampasrem.jpg" alt="Kampas Rem" class="product-img"></td>
                     <td>Kampas Rem Depan</td>
                     <td>Pengereman</td>
                     <td>Rp 150.000</td>
                 </tr>
-                <tr>
+                <tr class="filterDiv kaki-kaki">
                     <td><img src="images/ban.jpg" alt="Ban" class="product-img"></td>
                     <td>Ban Mobil R15</td>
                     <td>Kaki-kaki & Suspensi</td>
@@ -88,54 +113,56 @@
         </table>
     </main>
 
-   <aside>
-    <h3>Kategori Produk</h3>
-    <ul id="category-list">
-        <li onclick="filterSelection('all')">Semua Produk</li>
-        <li onclick="filterSelection('kaki-kaki')">Kaki-kaki & Suspensi</li>
-        <li onclick="filterSelection('transmisi')">Transmisi & Penggerak</li>
-        <li onclick="filterSelection('pengereman')">Pengereman</li>
-        <li onclick="filterSelection('mesin')">Mesin</li>
-        <li onclick="filterSelection('kelistrikan')">Kelistrikan</li>
-    </ul>
-</aside>
+    <aside>
+        <h3>Kategori Produk</h3>
+        <ul id="category-list">
+            <li onclick="filterSelection('all')">Semua Produk</li>
+            <li onclick="filterSelection('kaki-kaki')">Kaki-kaki & Suspensi</li>
+            <li onclick="filterSelection('transmisi')">Transmisi & Penggerak</li>
+            <li onclick="filterSelection('pengereman')">Pengereman</li>
+            <li onclick="filterSelection('mesin')">Mesin</li>
+            <li onclick="filterSelection('kelistrikan')">Kelistrikan</li>
+        </ul>
+    </aside>
 
-<main>
-    <h2>Koleksi Suku Cadang Kami</h2>
-    <table class="product-table" id="myTable">
-        <thead>
-            <tr>
-                <th>Gambar</th>
-                <th>Nama Barang</th>
-                <th>Kategori</th>
-                <th>Harga Satuan</th>
-            </tr>
-        </thead>
-        <tbody>
-            <tr class="filterDiv mesin">
-                <td><img src="images/Oli Filter.jpg" class="product-img"></td>
-                <td>Oli Filter</td>
-                <td>Mesin</td>
-                <td>Rp 70.000</td>
-            </tr>
-            <tr class="filterDiv kelistrikan">
-                <td><img src="images/busi.jpg" class="product-img"></td>
-                <td>Busi Iridium</td>
-                <td>Kelistrikan</td>
-                <td>Rp 45.000</td>
-            </tr>
-            <tr class="filterDiv pengereman">
-                <td><img src="images/kampasrem.jpg" class="product-img"></td>
-                <td>Kampas Rem Depan</td>
-                <td>Pengereman</td>
-                <td>Rp 150.000</td>
-            </tr>
-            <tr class="filterDiv kaki-kaki">
-                <td><img src="images/ban.jpg" class="product-img"></td>
-                <td>Ban Mobil R15</td>
-                <td>Kaki-kaki & Suspensi</td>
-                <td>Rp 650.000</td>
-            </tr>
-        </tbody>
-    </table>
-</main>
+    <footer>
+        <p>&copy; 2026 Ahmad Juniar (1325001)</p>
+    </footer>
+</div>
+
+<script>
+filterSelection("all")
+function filterSelection(c) {
+  var x, i;
+  x = document.getElementsByClassName("filterDiv");
+  if (c == "all") c = "";
+  for (i = 0; i < x.length; i++) {
+    w3RemoveClass(x[i], "show");
+    if (x[i].className.indexOf(c) > -1) w3AddClass(x[i], "show");
+  }
+}
+
+function w3AddClass(element, name) {
+  var i, arr1, arr2;
+  arr1 = element.className.split(" ");
+  arr2 = name.split(" ");
+  for (i = 0; i < arr2.length; i++) {
+    if (arr1.indexOf(arr2[i]) == -1) {element.className += " " + arr2[i];}
+  }
+}
+
+function w3RemoveClass(element, name) {
+  var i, arr1, arr2;
+  arr1 = element.className.split(" ");
+  arr2 = name.split(" ");
+  for (i = 0; i < arr2.length; i++) {
+    while (arr1.indexOf(arr2[i]) > -1) {
+      arr1.splice(arr1.indexOf(arr2[i]), 1);     
+    }
+  }
+  element.className = arr1.join(" ");
+}
+</script>
+
+</body>
+</html>
