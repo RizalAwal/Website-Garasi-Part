@@ -2,59 +2,107 @@
 <html lang="id">
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Product - Garasi Part</title>
     <link rel="stylesheet" href="style1.css">
+    <style>
+        /* Tambahan style khusus tabel produk agar lebih rapi */
+        .product-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+        .product-table th, .product-table td {
+            padding: 12px;
+            border: 1px solid #ddd;
+            text-align: left;
+        }
+        .product-table th {
+            background-color: #f39c12;
+            color: #1a1a1a;
+            text-transform: uppercase;
+        }
+        .product-table tr:nth-child(even) {
+            background-color: #f9f9f9;
+        }
+        .product-img {
+            width: 80px;
+            height: auto;
+            border-radius: 4px;
+        }
+    </style>
 </head>
 <body>
+
 <div class="grid-container">
-  <header>
-    <h1>GARASI PART</h1>
-  </header>
-  
-  <nav>
-    <a href="index.html">Home</a>
-    <a href="product.html">Product</a>
-    <a href="contactus.html">Contact Us</a>
-  </nav>
+    <header>
+        <h1>GARASI PART</h1>
+        <p>Solusi Suku Cadang Otomotif Terpercaya</p>
+    </header>
 
-  <main>
-    <h2>Produk Unggulan</h2>
-    <table border="1" width="100%" style="border-collapse: collapse; text-align: left;">
-      <thead>
-        <tr style="background-color: #eee;">
-          <th style="padding: 10px;">Kategori</th>
-          <th style="padding: 10px;">Nama Barang</th>
-          <th style="padding: 10px;">Harga</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr>
-          <td style="padding: 10px;">Mesin</td>
-          <td style="padding: 10px;">Oli Filter</td>
-          <td style="padding: 10px;">Rp 70.000</td>
-        </tr>
-        <tr>
-          <td style="padding: 10px;">Pengereman</td>
-          <td style="padding: 10px;">Kampas Rem</td>
-          <td style="padding: 10px;">Rp 150.000</td>
-        </tr>
-        <tr>
-          <td style="padding: 10px;">Kelistrikan</td>
-          <td style="padding: 10px;">Busi Iridium</td>
-          <td style="padding: 10px;">Rp 45.000</td>
-        </tr>
-      </tbody>
-    </table>
-  </main>
+    <nav>
+        <a href="index.html">Home</a>
+        <a href="product.html">Product</a>
+        <a href="contactus.html">Contact Us</a>
+    </nav>
 
-  <aside>
-    <h3>Kategori Populer</h3>
-    <p>Cari komponen kaki-kaki, transmisi, atau pelumas mesin terbaik hanya di sini.</p>
-  </aside>
+    <main>
+        <h2>Koleksi Suku Cadang Kami</h2>
+        <p>Berikut adalah daftar produk unggulan yang tersedia di Garasi Part. Kami hanya menyediakan barang dengan kualitas terbaik untuk kendaraan Anda.</p>
+        
+        <table class="product-table">
+            <thead>
+                <tr>
+                    <th>Gambar</th>
+                    <th>Nama Barang</th>
+                    <th>Kategori</th>
+                    <th>Harga Satuan</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td><img src="images/Oli Filter.jpg" alt="Oli Filter" class="product-img"></td>
+                    <td>Oli Filter</td>
+                    <td>Mesin</td>
+                    <td>Rp 70.000</td>
+                </tr>
+                <tr>
+                    <td><img src="images/busi.jpg" alt="Busi" class="product-img"></td>
+                    <td>Busi Iridium</td>
+                    <td>Kelistrikan</td>
+                    <td>Rp 45.000</td>
+                </tr>
+                <tr>
+                    <td><img src="images/kampasrem.jpg" alt="Kampas Rem" class="product-img"></td>
+                    <td>Kampas Rem Depan</td>
+                    <td>Pengereman</td>
+                    <td>Rp 150.000</td>
+                </tr>
+                <tr>
+                    <td><img src="images/ban.jpg" alt="Ban" class="product-img"></td>
+                    <td>Ban Mobil R15</td>
+                    <td>Kaki-kaki & Suspensi</td>
+                    <td>Rp 650.000</td>
+                </tr>
+            </tbody>
+        </table>
+    </main>
 
-  <footer>
-    <p>&copy; 2026 Ahmad Juniar (1325001)</p>
-  </footer>
+    <aside>
+        <h3>Kategori Produk</h3>
+        <ul>
+            <li>Kaki-kaki & Suspensi</li>
+            <li>Transmisi & Penggerak</li>
+            <li>Pengereman</li>
+            <li>Mesin</li>
+            <li>Kelistrikan</li>
+        </ul>
+    </aside>
+
+    <footer>
+        <p>&copy; 2026 Ahmad Juniar (1325001)</p>
+    </footer>
 </div>
+
 </body>
 </html>
