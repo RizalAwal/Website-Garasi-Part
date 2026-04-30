@@ -1,301 +1,273 @@
-<!DOCTYPE html>
-<html lang="id">
+<?php 
+include "koneksi.php"; 
+session_start();
+
+// 1. AMBIL DATA SALDO & PROFIL
+if (isset($conn)) { $koneksi = $conn; }
+$user_data = null;
+$saldo_display = "0";
+
+if(isset($_SESSION['status']) && $_SESSION['status'] == "login"){
+    $id_cust = $_SESSION['id_customer'];
+    $query_user = mysqli_query($koneksi, "SELECT * FROM customer WHERE id_customer='$id_cust'");
+    $user_data = mysqli_fetch_assoc($query_user);
+    if($user_data){
+        $saldo_display = number_format($user_data['saldo'], 0, ',', '.');
+    }
+}
+
+// LOGIKA PETUGAS
+$user_petugas = null;
+$is_login_petugas = false;
+if(isset($_SESSION['level']) && $_SESSION['level'] == "admin"){
+    $is_login_petugas = true;
+    $id_petugas = $_SESSION['id_petugas']; 
+    $q_petugas = mysqli_query($koneksi, "SELECT * FROM petugas WHERE id_petugas='$id_petugas'");
+    $user_petugas = mysqli_fetch_assoc($q_petugas);
+}
+
+// STATISTIK
+$total_customer = mysqli_num_rows(mysqli_query($conn, "SELECT * FROM customer"));
+$total_barang = mysqli_num_rows(mysqli_query($conn, "SELECT * FROM barang"));
+$total_transaksi = mysqli_num_rows(mysqli_query($conn, "SELECT * FROM transaksi"));
+
+$kat_dipilih = isset($_GET['kat']) ? mysqli_real_escape_string($conn, $_GET['kat']) : "";
+$keyword = isset($_GET['searchKeyword']) ? mysqli_real_escape_string($conn, $_GET['searchKeyword']) : "";
+?>
+
+<!doctype html>
+<html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>GARASI PART — Solusi Suku Cadang Otomotif</title>
-  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet"/>
-  <style>
-    /* RESET & VARIABLES */
-    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+    <title>Garasi Part - Suku Cadang Terpercaya</title>
 
-    :root {
-      --bg: #0a0a0a;
-      --surface: #111111;
-      --card: #161616;
-      --gold: #c9a84c;
-      --gold-light: #e8c96d;
-      --text: #e8e4dc;
-      --muted: #666;
-    }
+    <!-- Fonts & Icons -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link href="vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css" />
 
-    html { scroll-behavior: smooth; }
+    <style>
+        :root {
+            --primary: #03ac0e;
+            --secondary: #eb812a;
+            --dark: #212121;
+            --light-bg: #f3f4f5;
+        }
 
-    body {
-      background: var(--bg);
-      color: var(--text);
-      font-family: 'DM Sans', sans-serif;
-      font-weight: 300;
-      overflow-x: hidden;
-      cursor: none; /* Custom cursor ala contoh */
-    }
+        body { font-family: 'Inter', sans-serif; background-color: var(--light-bg); color: var(--dark); }
+        
+        /* Navbar Styling */
+        .main-nav { 
+            background: #fff; 
+            box-shadow: 0 2px 10px rgba(0,0,0,0.05); 
+            padding: 15px 0; 
+            position: sticky; 
+            top: 0; 
+            z-index: 1000; 
+        }
+        .logo h1 { font-weight: 800; color: var(--primary); font-size: 24px; margin: 0; }
+        
+        .search-container { position: relative; width: 100%; max-width: 500px; }
+        .search-container input { 
+            width: 100%; padding: 8px 40px 8px 15px; 
+            border: 1px solid #ddd; border-radius: 8px; outline: none;
+        }
+        .search-container i { position: absolute; right: 15px; top: 12px; color: #999; }
 
-    /* CUSTOM CURSOR */
-    .cursor {
-      position: fixed;
-      width: 12px; height: 12px;
-      background: var(--gold);
-      border-radius: 50%;
-      pointer-events: none;
-      z-index: 9999;
-      transition: transform 0.15s ease;
-      transform: translate(-50%, -50%);
-    }
-    .cursor-trail {
-      position: fixed;
-      width: 36px; height: 36px;
-      border: 1px solid var(--gold);
-      border-radius: 50%;
-      pointer-events: none;
-      z-index: 9998;
-      transition: transform 0.35s ease;
-      transform: translate(-50%, -50%);
-      opacity: 0.4;
-    }
+        /* Hero Section */
+        .hero-section {
+            background: linear-gradient(rgba(0,0,0,0.6), rgba(0,0,0,0.6)), url('https://images.unsplash.com/photo-1486006396193-471068589b58?q=80&w=2000');
+            background-size: cover; background-position: center;
+            height: 400px; display: flex; align-items: center; color: white; border-radius: 20px; margin-top: 20px;
+        }
 
-    /* GRAIN EFFECT */
-    body::before {
-      content: '';
-      position: fixed;
-      inset: 0;
-      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.04'/%3E%3C/svg%3E");
-      pointer-events: none;
-      z-index: 9000;
-      opacity: 0.6;
-    }
+        /* Product Card */
+        .product-card {
+            background: #fff; border-radius: 12px; transition: 0.3s;
+            border: none; overflow: hidden; height: 100%;
+        }
+        .product-card:hover { transform: translateY(-5px); box-shadow: 0 10px 20px rgba(0,0,0,0.1); }
+        .product-img { height: 180px; object-fit: contain; padding: 15px; background: #f9f9f9; width: 100%; }
+        
+        .badge-promo { position: absolute; top: 10px; left: 10px; background: #ff4d4d; color: white; padding: 2px 8px; border-radius: 4px; font-size: 11px; font-weight: bold; }
 
-    /* NAVIGATION */
-    nav {
-      position: fixed; top: 0; left: 0; right: 0;
-      z-index: 100;
-      display: flex; align-items: center; justify-content: space-between;
-      padding: 1.6rem 4rem;
-      background: linear-gradient(to bottom, rgba(10,10,10,0.95), transparent);
-    }
-    .nav-logo {
-      font-family: 'Playfair Display', serif;
-      font-size: 1.5rem;
-      font-weight: 900;
-      letter-spacing: 0.15em;
-      color: var(--gold);
-    }
-    .nav-links { display: flex; gap: 2.5rem; list-style: none; }
-    .nav-links a {
-      color: var(--muted);
-      text-decoration: none;
-      font-size: 0.8rem;
-      letter-spacing: 0.12em;
-      text-transform: uppercase;
-      transition: color 0.3s;
-    }
-    .nav-links a:hover { color: var(--gold); }
+        /* Custom Dropdown */
+        .dropdown-menu-custom {
+            display: none; position: absolute; right: 0; top: 45px; background: white; 
+            width: 250px; border-radius: 12px; box-shadow: 0 10px 30px rgba(0,0,0,0.1); 
+            z-index: 1001; padding: 15px; border: 1px solid #eee;
+        }
+        .dropdown-menu-custom.active { display: block; }
+        
+        .stat-box { background: white; padding: 20px; border-radius: 15px; text-align: center; border-bottom: 4px solid var(--primary); }
 
-    /* HERO SECTION */
-    .hero {
-      min-height: 100vh;
-      display: flex; flex-direction: column; justify-content: center;
-      padding: 0 4rem;
-      position: relative;
-      background: radial-gradient(circle at 70% 30%, rgba(201,168,76,0.08) 0%, transparent 60%);
-    }
-    .hero-eyebrow {
-      font-size: 0.72rem;
-      letter-spacing: 0.3em;
-      text-transform: uppercase;
-      color: var(--gold);
-      margin-bottom: 1.5rem;
-      animation: fadeUp 1s both;
-    }
-    .hero-title {
-      font-family: 'Playfair Display', serif;
-      font-size: clamp(3rem, 7vw, 6rem);
-      font-weight: 900;
-      line-height: 0.95;
-      margin-bottom: 2rem;
-      animation: fadeUp 1s 0.2s both;
-    }
-    .hero-title em { font-style: italic; color: var(--gold); }
-    .hero-sub {
-      max-width: 500px;
-      font-size: 1rem;
-      line-height: 1.75;
-      color: var(--muted);
-      margin-bottom: 3rem;
-      animation: fadeUp 1s 0.4s both;
-    }
-
-    /* GRID LAYOUT (Re-imagined from Source 2) */
-    .content-grid {
-      display: grid;
-      grid-template-columns: 2fr 1fr;
-      gap: 4rem;
-      padding: 8rem 4rem;
-      max-width: 1400px;
-      margin: 0 auto;
-    }
-
-    .section-title {
-      font-family: 'Playfair Display', serif;
-      font-size: 2.5rem;
-      margin-bottom: 1.5rem;
-    }
-
-    .card {
-      background: var(--card);
-      padding: 2.5rem;
-      border-radius: 2px;
-      border: 1px solid rgba(201,168,76,0.1);
-      transition: all 0.3s ease;
-    }
-    .card:hover { border-color: var(--gold); }
-
-    .about-img {
-      width: 100%;
-      height: 400px;
-      object-fit: cover;
-      margin-top: 2rem;
-      filter: grayscale(100%) contrast(110%);
-      transition: filter 0.5s ease;
-    }
-    .about-img:hover { filter: grayscale(0%); }
-
-    /* INFO LIST */
-    .info-list { list-style: none; margin-top: 1rem; }
-    .info-list li {
-      padding: 1rem 0;
-      border-bottom: 1px solid rgba(255,255,255,0.05);
-      display: flex;
-      justify-content: space-between;
-      font-size: 0.9rem;
-    }
-    .info-list li strong { color: var(--gold); }
-
-    /* FOOTER */
-    footer {
-      border-top: 1px solid rgba(255,255,255,0.06);
-      padding: 3rem 4rem;
-      text-align: center;
-    }
-    .footer-copy { font-size: 0.75rem; color: var(--muted); letter-spacing: 0.1em; }
-
-    /* ANIMATIONS */
-    @keyframes fadeUp {
-      from { opacity: 0; transform: translateY(30px); }
-      to { opacity: 1; transform: translateY(0); }
-    }
-
-    .reveal {
-      opacity: 0;
-      transform: translateY(40px);
-      transition: all 0.8s ease;
-    }
-    .reveal.visible { opacity: 1; transform: none; }
-
-    /* MOBILE RESPONSIVE */
-    @media (max-width: 900px) {
-      nav { padding: 1.5rem; }
-      .nav-links { display: none; }
-      .content-grid { grid-template-columns: 1fr; padding: 4rem 1.5rem; }
-      .hero { padding: 0 1.5rem; }
-    }
-  </style>
+        .btn-buy { background: var(--primary); color: white; border: none; font-weight: 600; width: 100%; border-radius: 8px; padding: 8px; }
+        .btn-buy:hover { background: #028a0b; color: white; }
+    </style>
 </head>
+
 <body>
 
-  <!-- INTERACTIVE ELEMENTS -->
-  <div class="cursor" id="cursor"></div>
-  <div class="cursor-trail" id="cursorTrail"></div>
+    <!-- Header / Nav -->
+    <header class="main-nav">
+        <div class="container d-flex align-items-center justify-content-between">
+            <a href="index.php" class="logo text-decoration-none"><h1>Garasi Part</h1></a>
 
-  <!-- NAVIGATION -->
-  <nav>
-    <div class="nav-logo">GARASI PART</div>
-    <ul class="nav-links">
-      <li><a href="index.html">Home</a></li>
-      <li><a href="produk.html">Product</a></li>
-      <li><a href="contactus.html">Contact Us</a></li>
-    </ul>
-  </nav>
+            <div class="search-container d-none d-md-block">
+                <form action="index.php" method="GET">
+                    <input type="text" name="searchKeyword" placeholder="Cari suku cadang..." value="<?= htmlspecialchars($keyword) ?>">
+                    <i class="fa fa-search"></i>
+                </form>
+            </div>
 
-  <!-- HERO SECTION -->
-  <section class="hero">
-    <p class="hero-eyebrow">✦ Premium Automotive Parts</p>
-    <h1 class="hero-title">Performa Maksimal<br>Untuk <em>Kendaraan</em> Anda.</h1>
-    <p class="hero-sub">Pusat penyedia suku cadang original berkualitas tinggi untuk keamanan dan kenyamanan berkendara yang tak tertandingi.</p>
-  </section>
+            <div class="nav-actions d-flex align-items-center gap-3">
+                <a href="keranjang/keranjang_lihat.php" class="text-dark"><i class="fa-solid fa-cart-shopping fa-lg"></i></a>
+                
+                <?php if (!isset($_SESSION['status'])): ?>
+                    <a href="login.php" class="btn btn-primary btn-sm px-4 rounded-pill">Login</a>
+                <?php else: ?>
+                    <div style="position:relative;">
+                        <div id="profileBtn" style="cursor:pointer;" class="d-flex align-items-center gap-2">
+                            <img src="https://ui-avatars.com/api/?name=<?= urlencode($user_data['nama_customer'] ?? 'User'); ?>&background=03ac0e&color=fff" width="32" class="rounded-circle">
+                            <span class="fw-bold small d-none d-md-block"><?= explode(' ', trim($user_data['nama_customer'] ?? 'Admin'))[0]; ?></span>
+                        </div>
+                        
+                        <div class="dropdown-menu-custom" id="profilePopup">
+                            <h6 class="mb-0"><?= $user_data['nama_customer'] ?? 'Administrator'; ?></h6>
+                            <p class="text-muted small mb-2">Saldo: Rp <?= $saldo_display; ?></p>
+                            <hr>
+                            <?php if(isset($_SESSION['level']) && $_SESSION['level'] == "admin"): ?>
+                                <a href="admin/index.php" class="dropdown-item small mb-2"><i class="fa fa-gauge-high me-2"></i> Dashboard Admin</a>
+                            <?php endif; ?>
+                            <a href="customer/customerlihat.php" class="dropdown-item small mb-2"><i class="fa fa-user me-2"></i> Profil Saya</a>
+                            <a href="logout.php" class="dropdown-item small text-danger fw-bold"><i class="fa fa-sign-out me-2"></i> Keluar</a>
+                        </div>
+                    </div>
+                <?php endif; ?>
+            </div>
+        </div>
+    </header>
 
-  <!-- MAIN CONTENT AREA -->
-  <div class="content-grid">
-    <!-- LEFT: ABOUT US -->
-    <main class="reveal">
-      <h2 class="section-title">Tentang Kami</h2>
-      <div class="card">
-        <p>Selamat datang di <strong>Garasi Part</strong>. Kami adalah mitra terpercaya Anda dalam menyediakan komponen mesin, sistem pengereman, hingga aksesoris interior dan eksterior yang memenuhi standar keamanan tertinggi.</p>
-        <br>
-        <p>Visi kami sederhana: Memberikan pelayanan prima dan produk original untuk memastikan setiap perjalanan Anda aman dan nyaman[cite: 2].</p>
-      </div>
-      <img src="images/Garasi Part.jpg" alt="Bengkel Garasi Part" class="about-img">
-    </main>
+    <div class="container">
+        <!-- Hero -->
+        <div class="hero-section px-5 mb-5">
+            <div>
+                <h1 class="display-4 fw-bold">Solusi Sparepart <br><span style="color: var(--primary);">Mobil Anda.</span></h1>
+                <p class="lead">Original, Bergaransi, dan Pengiriman Cepat.</p>
+                <a href="#produk-display" class="btn btn-light btn-lg fw-bold mt-3">Belanja Sekarang</a>
+            </div>
+        </div>
 
-    <!-- RIGHT: ASIDE INFO -->
-    <aside class="reveal">
-      <div class="card" style="margin-bottom: 2rem;">
-        <h3 style="color: var(--gold); margin-bottom: 1rem; text-transform: uppercase; font-size: 0.8rem; letter-spacing: 0.2em;">Jam Operasional</h3>
-        <ul class="info-list">
-          <li>Senin - Jumat <span>08.00 - 17.00</span></li>
-          <li>Sabtu <span>08.00 - 15.00</span></li>
-          <li>Minggu <strong>LIBUR</strong></li>
-        </ul>
-      </div>
+        <!-- Statistik -->
+        <div class="row mb-5">
+            <div class="col-md-4 mb-3">
+                <div class="stat-box">
+                    <h5 class="text-muted small text-uppercase">Produk Tersedia</h5>
+                    <h2 class="fw-bold"><?= $total_barang; ?></h2>
+                </div>
+            </div>
+            <div class="col-md-4 mb-3">
+                <div class="stat-box" style="border-color: var(--secondary);">
+                    <h5 class="text-muted small text-uppercase">Transaksi Sukses</h5>
+                    <h2 class="fw-bold"><?= $total_transaksi; ?></h2>
+                </div>
+            </div>
+            <div class="col-md-4 mb-3">
+                <div class="stat-box" style="border-color: #3498db;">
+                    <h5 class="text-muted small text-uppercase">Pelanggan Aktif</h5>
+                    <h2 class="fw-bold"><?= $total_customer; ?></h2>
+                </div>
+            </div>
+        </div>
 
-      <div class="card">
-        <h3 style="color: var(--gold); margin-bottom: 1rem; text-transform: uppercase; font-size: 0.8rem; letter-spacing: 0.2em;">Lokasi Toko</h3>
-        <p style="line-height: 1.6;">Jl. Warakas Raya Gg. 2A No. 7B<br>Jakarta Utara[cite: 2]</p>
-      </div>
-    </aside>
-  </div>
+        <!-- Produk Section -->
+        <div id="produk-display" class="mb-5">
+            <div class="d-flex justify-content-between align-items-center mb-4">
+                <h3 class="fw-bold"><?= ($keyword != "") ? "Hasil Pencarian: '$keyword'" : "Produk Terbaru"; ?></h3>
+                <div class="dropdown">
+                    <button class="btn btn-outline-secondary dropdown-toggle btn-sm" data-bs-toggle="dropdown">Kategori</button>
+                    <ul class="dropdown-menu">
+                        <li><a class="dropdown-item" href="index.php">Semua</a></li>
+                        <li><a class="dropdown-item" href="index.php?kat=Mesin">Mesin</a></li>
+                        <li><a class="dropdown-item" href="index.php?kat=Pengereman">Pengereman</a></li>
+                    </ul>
+                </div>
+            </div>
 
-  <!-- FOOTER -->
-  <footer>
-    <p class="footer-copy">&copy; 2026 Rizal Kusuma (1324001). All Rights Reserved[cite: 2].</p>
-  </footer>
+            <div class="row g-4">
+                <?php
+                $base_sql = "SELECT barang.*, (SELECT SUM(jumlah_transaksi) FROM detailtransaksi WHERE detailtransaksi.no_barang = barang.no_barang) AS total_terjual FROM barang";
+                if($keyword != "") { $sql = "$base_sql WHERE nama_barang LIKE '%$keyword%'"; }
+                elseif($kat_dipilih != "") { $sql = "$base_sql WHERE kategori_barang = '$kat_dipilih'"; }
+                else { $sql = "$base_sql LIMIT 12"; }
 
-  <!-- SCRIPTS FOR INTERACTION -->
-  <script>
-    // 1. Custom Cursor Logic
-    const cursor = document.getElementById('cursor');
-    const trail = document.getElementById('cursorTrail');
-    let mx = 0, my = 0, tx = 0, ty = 0;
+                $q_filter = mysqli_query($conn, $sql);
+                while($row = mysqli_fetch_array($q_filter)):
+                    $terjual = $row['total_terjual'] ?? 0;
+                    $sisa_stok = $row['stok_barang'] - $terjual;
+                ?>
+                <div class="col-lg-3 col-md-4 col-6">
+                    <div class="product-card card shadow-sm position-relative">
+                        <span class="badge-promo">Original</span>
+                        <img src="images/<?= $row['gambar']; ?>" onerror="this.src='images/no-image.png'" class="product-img">
+                        <div class="card-body p-3">
+                            <h6 class="text-truncate mb-1"><?= $row['nama_barang']; ?></h6>
+                            <h5 class="fw-bold text-dark mb-2">Rp <?= number_format($row['harga_satuan'], 0, ',', '.'); ?></h5>
+                            
+                            <div class="d-flex align-items-center gap-1 mb-3">
+                                <i class="fa fa-star text-warning small"></i>
+                                <span class="small text-muted">5.0 | Terjual <?= $terjual; ?></span>
+                            </div>
 
-    document.addEventListener('mousemove', e => {
-      mx = e.clientX; my = e.clientY;
-      cursor.style.left = mx + 'px';
-      cursor.style.top  = my + 'px';
-    });
+                            <?php if($sisa_stok > 0): ?>
+                                <a href="checkout/checkout_langsung.php?id=<?= $row['no_barang']; ?>" class="btn btn-buy">Beli</a>
+                            <?php else: ?>
+                                <button class="btn btn-secondary w-100 disabled">Stok Habis</button>
+                            <?php endif; ?>
+                        </div>
+                    </div>
+                </div>
+                <?php endwhile; ?>
+            </div>
+        </div>
+    </div>
 
-    function animateTrail() {
-      tx += (mx - tx) * 0.12;
-      ty += (my - ty) * 0.12;
-      trail.style.left = tx + 'px';
-      trail.style.top  = ty + 'px';
-      requestAnimationFrame(animateTrail);
-    }
-    animateTrail();
+    <!-- Footer -->
+    <footer class="bg-white border-top py-5 mt-5">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-4 mb-4">
+                    <h4 class="fw-bold text-success">Garasi Part</h4>
+                    <p class="text-muted">Pusat onderdil dan aksesoris mobil terlengkap di Jakarta. Kami hanya menjual barang berkualitas tinggi.</p>
+                </div>
+                <div class="col-md-2 mb-4">
+                    <h6 class="fw-bold">Layanan</h6>
+                    <ul class="list-unstyled small">
+                        <li><a href="#" class="text-decoration-none text-muted">Cara Belanja</a></li>
+                        <li><a href="#" class="text-decoration-none text-muted">Pengiriman</a></li>
+                    </ul>
+                </div>
+                <div class="col-md-3 mb-4">
+                    <h6 class="fw-bold">Kontak</h6>
+                    <p class="small text-muted"><i class="fa fa-envelope me-2"></i> cs@garasipart.com<br><i class="fa fa-phone me-2"></i> +62 895 3223 3232</p>
+                </div>
+            </div>
+        </div>
+    </footer>
 
-    // 2. Hover Scale Effect for interactive elements
-    document.querySelectorAll('a, .card, .about-img').forEach(el => {
-      el.addEventListener('mouseenter', () => { cursor.style.transform = 'translate(-50%,-50%) scale(2.5)'; });
-      el.addEventListener('mouseleave', () => { cursor.style.transform = 'translate(-50%,-50%) scale(1)'; });
-    });
-
-    // 3. Scroll Reveal Logic
-    const observer = new IntersectionObserver((entries) => {
-      entries.forEach((e) => {
-        if (e.isIntersecting) {
-          e.target.classList.add('visible');
-        }
-      });
-    }, { threshold: 0.1 });
-    document.querySelectorAll('.reveal').forEach(r => observer.observe(r));
-  </script>
+    <!-- Scripts -->
+    <script src="vendor/jquery/jquery.min.js"></script>
+    <script src="vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+    <script>
+        $(document).ready(function(){
+            $("#profileBtn").click(function(e){
+                e.stopPropagation();
+                $("#profilePopup").toggleClass("active");
+            });
+            $(document).click(function(){ $("#profilePopup").removeClass("active"); });
+        });
+    </script>
 </body>
 </html>
