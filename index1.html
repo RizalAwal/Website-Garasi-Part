@@ -1,0 +1,295 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Garasi Part | Suku Cadang & Aksesoris Mobil</title>
+    
+    <!-- Bootstrap 5 & Google Fonts -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <style>
+        :root {
+            --primary-color: #00AA5B; /* Hijau Tokopedia-ish */
+            --secondary-color: #FF5722;
+            --bg-light: #F0F3F7;
+            --text-dark: #212121;
+        }
+
+        body {
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            background-color: var(--bg-light);
+            color: var(--text-dark);
+        }
+
+        /* Navbar Custom */
+        .navbar {
+            background: #ffffff;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+            padding: 1rem 0;
+        }
+
+        .search-bar {
+            background: #F3F4F5;
+            border-radius: 8px;
+            border: 1px solid #E5E7E9;
+            padding: 0.5rem 1rem;
+            width: 100%;
+            max-width: 600px;
+        }
+
+        .search-bar input {
+            background: transparent;
+            border: none;
+            outline: none;
+            width: 90%;
+            font-size: 0.9rem;
+        }
+
+        /* Hero Banner */
+        .hero-banner {
+            background: linear-gradient(135deg, #00AA5B 0%, #007D43 100%);
+            border-radius: 20px;
+            padding: 3rem;
+            color: white;
+            margin-top: 2rem;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .hero-banner img {
+            position: absolute;
+            right: -50px;
+            bottom: -20px;
+            width: 400px;
+            opacity: 0.2;
+        }
+
+        /* Card Produk */
+        .product-card {
+            background: #fff;
+            border: none;
+            border-radius: 12px;
+            transition: all 0.3s ease;
+            cursor: pointer;
+            height: 100%;
+        }
+
+        .product-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+        }
+
+        .img-container {
+            height: 180px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 1rem;
+            background: #f8f9fa;
+            border-radius: 12px 12px 0 0;
+        }
+
+        .product-img {
+            max-height: 100%;
+            max-width: 100%;
+            object-fit: contain;
+        }
+
+        .price {
+            color: var(--text-dark);
+            font-weight: 700;
+            font-size: 1.1rem;
+        }
+
+        .btn-cart {
+            border: 1px solid var(--primary-color);
+            color: var(--primary-color);
+            font-weight: 600;
+            width: 100%;
+            border-radius: 8px;
+            transition: 0.3s;
+        }
+
+        .btn-cart:hover {
+            background: var(--primary-color);
+            color: white;
+        }
+
+        /* Category Pill */
+        .cat-pill {
+            padding: 0.5rem 1.2rem;
+            border-radius: 50px;
+            background: white;
+            border: 1px solid #ddd;
+            color: #666;
+            text-decoration: none;
+            font-size: 0.85rem;
+            transition: 0.3s;
+        }
+
+        .cat-pill.active, .cat-pill:hover {
+            background: var(--primary-color);
+            color: white;
+            border-color: var(--primary-color);
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Navigasi -->
+    <nav class="navbar navbar-expand-lg sticky-top">
+        <div class="container">
+            <a class="navbar-brand fw-bold text-success fs-3" href="#">Garasi<span class="text-dark">Part</span></a>
+            
+            <div class="d-flex align-items-center flex-grow-1 mx-lg-5">
+                <div class="search-bar d-flex align-items-center w-100">
+                    <i class="fa fa-search text-muted me-2"></i>
+                    <input type="text" placeholder="Cari busi, oli, atau kampas rem...">
+                </div>
+            </div>
+
+            <div class="d-flex align-items-center gap-4">
+                <a href="#" class="text-dark position-relative">
+                    <i class="fa-solid fa-cart-shopping fs-5"></i>
+                    <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger" style="font-size: 0.6rem;">3</span>
+                </a>
+                <div class="vr d-none d-md-block" style="height: 25px;"></div>
+                <a href="login.html" class="btn btn-outline-success fw-bold px-4 rounded-3 d-none d-md-block">Masuk</a>
+                <a href="register.html" class="btn btn-success fw-bold px-4 rounded-3 d-none d-md-block">Daftar</a>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container">
+        <!-- Banner -->
+        <div class="hero-banner">
+            <div class="row align-items-center">
+                <div class="col-md-7">
+                    <span class="badge bg-warning text-dark mb-3">Promo Gajian Spesial</span>
+                    <h1 class="display-5 fw-bold mb-3">Diskon Sparepart <br>Hingga 50%</h1>
+                    <p class="lead mb-4">Lengkapi kebutuhan servis mobilmu dengan suku cadang original tanpa menguras kantong.</p>
+                    <button class="btn btn-light btn-lg fw-bold text-success px-5">Cek Sekarang</button>
+                </div>
+            </div>
+            <i class="fa-solid fa-gears" style="position:absolute; right: 5%; bottom: 10%; font-size: 15rem; color: rgba(255,255,255,0.1);"></i>
+        </div>
+
+        <!-- Filter Kategori -->
+        <div class="d-flex gap-2 my-5 overflow-auto pb-2">
+            <a href="#" class="cat-pill active">Semua</a>
+            <a href="#" class="cat-pill">Mesin</a>
+            <a href="#" class="cat-pill">Pengereman</a>
+            <a href="#" class="cat-pill">Kelistrikan</a>
+            <a href="#" class="cat-pill">Interior</a>
+            <a href="#" class="cat-pill">Oli & Cairan</a>
+            <a href="#" class="cat-pill">Ban & Velg</a>
+        </div>
+
+        <!-- Grid Produk -->
+        <div class="row g-4 mb-5">
+            <!-- Item 1 -->
+            <div class="col-6 col-md-4 col-lg-3">
+                <div class="product-card card p-3">
+                    <div class="img-container mb-3">
+                        <img src="https://via.placeholder.com/200x150?text=Busi+Iridium" class="product-img" alt="Busi">
+                    </div>
+                    <p class="text-muted small mb-1">Mesin</p>
+                    <h6 class="fw-bold text-truncate">Busi Iridium Racing Pro</h6>
+                    <p class="price mb-2">Rp 125.000</p>
+                    <div class="d-flex align-items-center mb-3">
+                        <i class="fa fa-star text-warning small"></i>
+                        <span class="ms-1 small text-muted">4.9 | Terjual 1rb+</span>
+                    </div>
+                    <button class="btn btn-cart"><i class="fa fa-plus me-2"></i>Keranjang</button>
+                </div>
+            </div>
+
+            <!-- Item 2 -->
+            <div class="col-6 col-md-4 col-lg-3">
+                <div class="product-card card p-3">
+                    <div class="img-container mb-3">
+                        <img src="https://via.placeholder.com/200x150?text=Oli+Mesin" class="product-img" alt="Oli">
+                    </div>
+                    <p class="text-muted small mb-1">Oli & Cairan</p>
+                    <h6 class="fw-bold text-truncate">Oli Sintetik 5W-30 (1L)</h6>
+                    <p class="price mb-2">Rp 95.000</p>
+                    <div class="d-flex align-items-center mb-3">
+                        <i class="fa fa-star text-warning small"></i>
+                        <span class="ms-1 small text-muted">4.8 | Terjual 500+</span>
+                    </div>
+                    <button class="btn btn-cart"><i class="fa fa-plus me-2"></i>Keranjang</button>
+                </div>
+            </div>
+
+            <!-- Item 3 -->
+            <div class="col-6 col-md-4 col-lg-3">
+                <div class="product-card card p-3">
+                    <div class="img-container mb-3">
+                        <img src="https://via.placeholder.com/200x150?text=Kampas+Rem" class="product-img" alt="Rem">
+                    </div>
+                    <p class="text-muted small mb-1">Pengereman</p>
+                    <h6 class="fw-bold text-truncate">Kampas Rem Depan Ceramic</h6>
+                    <p class="price mb-2">Rp 350.000</p>
+                    <div class="d-flex align-items-center mb-3">
+                        <i class="fa fa-star text-warning small"></i>
+                        <span class="ms-1 small text-muted">5.0 | Terjual 200+</span>
+                    </div>
+                    <button class="btn btn-cart"><i class="fa fa-plus me-2"></i>Keranjang</button>
+                </div>
+            </div>
+
+            <!-- Item 4 -->
+            <div class="col-6 col-md-4 col-lg-3">
+                <div class="product-card card p-3">
+                    <div class="img-container mb-3">
+                        <img src="https://via.placeholder.com/200x150?text=Filter+Udara" class="product-img" alt="Filter">
+                    </div>
+                    <p class="text-muted small mb-1">Mesin</p>
+                    <h6 class="fw-bold text-truncate">Filter Udara High Flow</h6>
+                    <p class="price mb-2">Rp 180.000</p>
+                    <div class="d-flex align-items-center mb-3">
+                        <i class="fa fa-star text-warning small"></i>
+                        <span class="ms-1 small text-muted">4.7 | Terjual 800+</span>
+                    </div>
+                    <button class="btn btn-cart"><i class="fa fa-plus me-2"></i>Keranjang</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="bg-white border-top py-5 mt-5">
+        <div class="container text-center text-md-start">
+            <div class="row">
+                <div class="col-md-4 mb-4">
+                    <h5 class="fw-bold text-success mb-3">GarasiPart</h5>
+                    <p class="text-muted small">Solusi terpercaya untuk suku cadang kendaraan Anda. Kualitas original, harga kompetitif, dan pelayanan prima.</p>
+                </div>
+                <div class="col-md-4 mb-4">
+                    <h6 class="fw-bold mb-3">Bantuan</h6>
+                    <ul class="list-unstyled small text-muted">
+                        <li class="mb-2">Cara Pembelian</li>
+                        <li class="mb-2">Pengiriman</li>
+                        <li class="mb-2">Kebijakan Pengembalian</li>
+                    </ul>
+                </div>
+                <div class="col-md-4">
+                    <h6 class="fw-bold mb-3">Ikuti Kami</h6>
+                    <div class="d-flex gap-3">
+                        <a href="#" class="text-muted fs-4"><i class="fab fa-instagram"></i></a>
+                        <a href="#" class="text-muted fs-4"><i class="fab fa-facebook"></i></a>
+                        <a href="#" class="text-muted fs-4"><i class="fab fa-whatsapp"></i></a>
+                    </div>
+                </div>
+            </div>
+            <hr class="my-4">
+            <p class="text-center text-muted small mb-0">&copy; 2026 GarasiPart Indonesia. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
