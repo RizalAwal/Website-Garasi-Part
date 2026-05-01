@@ -44,47 +44,62 @@
     .nav-logo { font-family: 'Playfair Display', serif; font-size: 1.5rem; font-weight: 900; letter-spacing: 0.15em; color: var(--gold); }
     .nav-links { display: flex; gap: 2.5rem; list-style: none; }
     .nav-links a { color: var(--muted); text-decoration: none; font-size: 0.8rem; letter-spacing: 0.12em; text-transform: uppercase; transition: color 0.3s; }
-/* Pastikan kontainer dekorasi menutupi seluruh hero agar posisi absolut bekerja */
-.event-decoration {
-    display: none; 
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    pointer-events: none;
-    z-index: 2; /* Di atas background, di bawah teks */
-}
 
-/* Pastikan dekorasi muncul saat tema Ramadhan aktif */
+    /* Pastikan kontainer muncul */
 body.theme-ramadhan #ramadhan-decor { 
   display: block !important; 
 }
 
-.event-decoration svg {
+/* Pengaturan Gambar */
+.event-decoration img {
   position: absolute;
-  filter: drop-shadow(0 0 10px rgba(57, 231, 95, 0.5));
   z-index: 5;
+  pointer-events: none;
+  filter: drop-shadow(0 0 15px rgba(57, 231, 95, 0.4)); /* Efek menyala */
 }
 
-/* Ukuran & Posisi Unta */
+/* Posisi Unta di Kanan Bawah */
 .camel-asset {
-  width: 200px;
+  width: 320px; /* Ukuran lebih besar agar gagah */
   height: auto;
-  bottom: 15%;
-  right: 10%;
-  animation: walk 5s ease-in-out infinite;
+  bottom: 20px;
+  right: 40px;
+  animation: camel-float 6s ease-in-out infinite;
 }
 
-/* Ukuran & Posisi Lentera */
+/* Posisi Lentera di Kanan Atas */
 .lantern-asset {
-  width: 80px;
+  width: 130px;
   height: auto;
-  top: 15%;
-  right: 8%;
-  animation: swing 3s ease-in-out infinite;
+  top: 60px;
+  right: 10%;
+  animation: lantern-swing 3s ease-in-out infinite;
   transform-origin: top center;
 }
+
+/* Efek Glow Latar Belakang */
+.ramadhan-glow {
+  position: absolute;
+  bottom: -100px;
+  right: -100px;
+  width: 500px;
+  height: 500px;
+  background: radial-gradient(circle, rgba(57, 231, 95, 0.1) 0%, transparent 70%);
+  z-index: 1;
+}
+
+/* ANIMASI BARU */
+@keyframes camel-float {
+  0%, 100% { transform: translateY(0) rotate(0deg); }
+  50% { transform: translateY(-15px) rotate(1deg); }
+}
+
+@keyframes lantern-swing {
+  0%, 100% { transform: rotate(-8deg); }
+  50% { transform: rotate(8deg); }
+}
+
+
 
 /* Animasi */
 @keyframes walk {
@@ -173,17 +188,16 @@ body.theme-ramadhan #ramadhan-decor {
       <img src="https://img.icons8.com/plasticine/400/santa.png" class="santa-asset" alt="Santa Claus">
     </div>
 
-   <!-- RAMADHAN DECOR (SVG INLINE - PASTI MUNCUL) -->
+<!-- RAMADHAN DECOR (High Quality Assets) -->
 <div id="ramadhan-decor" class="event-decoration">
-  <!-- Gambar Unta SVG -->
-  <svg class="camel-asset" viewBox="0 0 24 24" fill="#39e75f">
-    <path d="M22,14C22,14 21,11 19,11C17,11 16,13 14,13C12,13 11,10 8,10C5,10 3,12 3,14C3,14 2,14 2,15C2,16 3,17 4,17C5,17 6,16 6,15C6,15 7,14 8,14C9,14 10,15 11,15C12,15 13,14 14,14C15,14 16,15 18,15C20,15 21,14 22,14M18,9C18,8.45 17.55,8 17,8C16.45,8 16,8.45 16,9C16,9.55 16.45,10 17,10C17.55,10 18,9.55 18,9Z"/>
-  </svg>
+  <!-- Unta Realistis -->
+  <img src="https://i.ibb.co/LpXFzHj/camel-ramadan.png" class="camel-asset" alt="Unta Ramadhan">
   
-  <!-- Gambar Lentera SVG -->
-  <svg class="lantern-asset" viewBox="0 0 24 24" fill="#39e75f">
-    <path d="M12,2L9,5H15L12,2M8,6V18H16V6H8M10,8H14V16H10V8M9,19L12,22L15,19H9Z"/>
-  </svg>
+  <!-- Lentera Gantung -->
+  <img src="https://i.ibb.co/S7qM0zX/lantern-ramadan.png" class="lantern-asset" alt="Lentera Ramadhan">
+  
+  <!-- Efek Cahaya Hijau (Glow) -->
+  <div class="ramadhan-glow"></div>
 </div>
 
     <!-- Imlek Decoration -->
