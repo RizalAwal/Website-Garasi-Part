@@ -1,0 +1,59 @@
+/* --- REALISTIC DECORATIONS --- */
+.event-decoration {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  z-index: 1;
+  display: none;
+  overflow: hidden;
+}
+
+/* CHRISTMAS: Santa & Reindeer Silhouette */
+body.theme-christmas #christmas-decor { display: block; }
+.santa-silhouette {
+  position: absolute;
+  width: 150px;
+  height: 40px;
+  background: url('https://www.svgrepo.com/show/305467/santa-claus-sleigh.svg') no-repeat;
+  filter: brightness(0) invert(1) drop-shadow(0 0 10px rgba(255,255,255,0.5));
+  animation: flyAround 15s linear infinite;
+}
+
+/* RAMADHAN: Silhouette Unta & Pohon */
+body.theme-ramadhan #ramadhan-decor { display: block; }
+.desert-svg {
+  position: absolute;
+  bottom: 0;
+  right: 5%;
+  width: 300px;
+  height: 200px;
+  fill: var(--gold);
+  opacity: 0.4;
+  animation: desertSway 8s ease-in-out infinite;
+}
+
+/* IMLEK: Naga Tradisional & Awan */
+body.theme-imlek #imlek-decor { display: block; }
+.dragon-svg {
+  position: absolute;
+  width: 400px;
+  filter: drop-shadow(0 0 15px var(--gold));
+  animation: dragonSway 10s ease-in-out infinite;
+}
+
+/* ANIMASI BARU */
+@keyframes flyAround {
+  0% { transform: translate(120vw, 20vh) scale(0.8); }
+  50% { transform: translate(50vw, 10vh) scale(1.1); }
+  100% { transform: translate(-20vw, 25vh) scale(0.8); }
+}
+
+@keyframes dragonSway {
+  0%, 100% { transform: translate(-10%, 40%) rotate(-5deg); }
+  50% { transform: translate(110%, 30%) rotate(5deg); }
+}
+
+@keyframes desertSway {
+  0%, 100% { transform: skewX(-2deg); }
+  50% { transform: skewX(2deg); }
+}
