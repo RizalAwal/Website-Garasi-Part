@@ -20,21 +20,9 @@
     }
 
     /* THEME CONFIGURATIONS */
-    body.theme-christmas {
-      --bg: #0a1a12;
-      --gold: #d42426;
-      --gold-light: #ff4d4d;
-    }
-    body.theme-ramadhan {
-      --bg: #06140a;
-      --gold: #39e75f;
-      --gold-light: #f1c40f;
-    }
-    body.theme-imlek {
-      --bg: #1a0505;
-      --gold: #ee1c25;
-      --gold-light: #ffcc00;
-    }
+    body.theme-christmas { --bg: #0a1a12; --gold: #d42426; --gold-light: #ff4d4d; }
+    body.theme-ramadhan { --bg: #06140a; --gold: #39e75f; --gold-light: #f1c40f; }
+    body.theme-imlek { --bg: #1a0505; --gold: #ee1c25; --gold-light: #ffcc00; }
 
     body {
       background: var(--bg);
@@ -47,7 +35,7 @@
     }
 
     /* CUSTOM CURSOR */
-    .cursor { position: fixed; width: 12px; height: 12px; background: var(--gold); border-radius: 50%; pointer-events: none; z-index: 9999; transform: translate(-50%, -50%); transition: transform 0.15s ease; }
+    .cursor { position: fixed; width: 12px; height: 12px; background: var(--gold); border-radius: 50%; pointer-events: none; z-index: 9999; transform: translate(-50%, -50%); }
     .cursor-trail { position: fixed; width: 36px; height: 36px; border: 1px solid var(--gold); border-radius: 50%; pointer-events: none; z-index: 9998; transform: translate(-50%, -50%); opacity: 0.4; }
 
     /* NAVIGATION */
@@ -55,7 +43,6 @@
     .nav-logo { font-family: 'Playfair Display', serif; font-size: 1.5rem; font-weight: 900; letter-spacing: 0.15em; color: var(--gold); }
     .nav-links { display: flex; gap: 2.5rem; list-style: none; }
     .nav-links a { color: var(--muted); text-decoration: none; font-size: 0.8rem; letter-spacing: 0.12em; text-transform: uppercase; transition: color 0.3s; }
-    .nav-links a:hover { color: var(--gold); }
 
     /* HERO SECTION */
     .hero {
@@ -66,45 +53,58 @@
       background: radial-gradient(circle at 70% 30%, rgba(201,168,76,0.08) 0%, transparent 60%);
       overflow: hidden;
     }
-    .hero-title { font-family: 'Playfair Display', serif; font-size: clamp(3rem, 7vw, 6rem); font-weight: 900; line-height: 0.95; margin-bottom: 2rem; z-index: 5; }
+    .hero-title { font-family: 'Playfair Display', serif; font-size: clamp(3rem, 7vw, 6rem); font-weight: 900; line-height: 0.95; margin-bottom: 2rem; z-index: 5; position: relative; }
     .hero-title em { font-style: italic; color: var(--gold); transition: color 0.5s; }
-    .hero-sub { max-width: 500px; font-size: 1rem; line-height: 1.75; color: var(--muted); margin-bottom: 3rem; z-index: 5; }
+    .hero-sub { max-width: 500px; font-size: 1rem; line-height: 1.75; color: var(--muted); margin-bottom: 3rem; z-index: 5; position: relative; }
 
-    /* EVENT DECORATIONS & ANIMATIONS */
-    .event-decoration { position: absolute; inset: 0; pointer-events: none; z-index: 1; display: none; opacity: 0.6; }
+    /* --- DECORATIONS LOGIC --- */
+    .event-decoration { position: absolute; inset: 0; pointer-events: none; z-index: 2; display: none; }
 
-    /* Christmas: Santa Flying */
+    /* 1. CHRISTMAS: Santa & Moon */
     body.theme-christmas #christmas-decor { display: block; }
-    .moon-glow { position: absolute; top: 10%; right: 15%; width: 120px; height: 120px; background: radial-gradient(circle, #fffce0 0%, rgba(255,252,224,0) 70%); border-radius: 50%; animation: pulse 4s ease-in-out infinite; }
-    .santa-wrapper { position: absolute; top: 20%; width: 100%; animation: flyPath 12s linear infinite; font-size: 2rem; }
+    .moon { position: absolute; top: 15%; right: 15%; width: 150px; height: 150px; background: #fefcd7; border-radius: 50%; box-shadow: 0 0 80px rgba(254, 252, 215, 0.4); }
+    .santa-fly {
+      position: absolute;
+      top: 25%;
+      width: 250px;
+      height: 100px;
+      background: url('https://www.svgrepo.com/show/305467/santa-claus-sleigh.svg') no-repeat center;
+      background-size: contain;
+      filter: brightness(0) invert(1);
+      animation: flyAround 15s linear infinite;
+    }
 
-    /* Ramadhan: Camel & Tree */
+    /* 2. RAMADHAN: Camel & Palm Tree */
     body.theme-ramadhan #ramadhan-decor { display: block; }
-    .palm-tree { position: absolute; bottom: 0; right: 10%; font-size: 5rem; transform-origin: bottom; animation: sway 5s ease-in-out infinite; }
-    .camel { position: absolute; bottom: 20px; right: 15%; font-size: 2.5rem; animation: camelWalk 10s ease-in-out infinite; }
+    .palm-tree { position: absolute; bottom: 0; right: 10%; width: 200px; height: 300px; background: url('https://www.svgrepo.com/show/489849/palm-tree.svg') no-repeat center; background-size: contain; filter: brightness(0) invert(1) opacity(0.2); animation: sway 8s ease-in-out infinite; }
+    .camel { position: absolute; bottom: 50px; right: 18%; width: 120px; height: 100px; background: url('https://www.svgrepo.com/show/247181/camel-middle-east.svg') no-repeat center; background-size: contain; filter: brightness(0) invert(1) opacity(0.3); animation: walk 12s ease-in-out infinite; }
 
-    /* Imlek: Dragon & Clouds */
+    /* 3. IMLEK: Dragon Silhouette */
     body.theme-imlek #imlek-decor { display: block; }
-    .dragon-spirit { position: absolute; font-size: 2rem; color: #ff2a2a; filter: drop-shadow(0 0 15px #ff0000); animation: dragonFloat 15s linear infinite; }
-    .cloud-group { position: absolute; width: 200%; top: 20%; display: flex; justify-content: space-around; animation: moveClouds 40s linear infinite; opacity: 0.3; }
+    .dragon {
+      position: absolute;
+      top: 40%;
+      left: -20%;
+      width: 400px;
+      height: 200px;
+      background: url('https://www.svgrepo.com/show/104192/dragon.svg') no-repeat center;
+      background-size: contain;
+      filter: brightness(0) invert(1) sepia(1) saturate(10000%) hue-rotate(-10deg); /* Membuat Naga jadi Merah */
+      opacity: 0.5;
+      animation: dragonMove 20s linear infinite;
+    }
 
-    /* KEYFRAMES */
-    @keyframes flyPath { from { transform: translateX(110%) translateY(0); } to { transform: translateX(-150%) translateY(-50px); } }
-    @keyframes pulse { 0%, 100% { opacity: 0.5; transform: scale(1); } 50% { opacity: 0.8; transform: scale(1.1); } }
-    @keyframes sway { 0%, 100% { transform: rotate(-2deg); } 50% { transform: rotate(3deg); } }
-    @keyframes camelWalk { 0%, 100% { transform: translateX(0); } 50% { transform: translateX(-30px); } }
-    @keyframes dragonFloat { 0% { left: -20%; top: 40%; transform: rotate(5deg); } 50% { top: 55%; transform: rotate(-5deg); } 100% { left: 120%; top: 45%; } }
-    @keyframes moveClouds { from { transform: translateX(0); } to { transform: translateX(-50%); } }
+    /* ANIMATIONS */
+    @keyframes flyAround { from { left: 110%; transform: translateY(0); } to { left: -30%; transform: translateY(-50px); } }
+    @keyframes sway { 0%, 100% { transform: rotate(-3deg); } 50% { transform: rotate(3deg); } }
+    @keyframes walk { 0%, 100% { transform: translateX(0); } 50% { transform: translateX(-50px); } }
+    @keyframes dragonMove { 0% { left: -30%; transform: translateY(0); } 50% { transform: translateY(-100px); } 100% { left: 110%; transform: translateY(0); } }
 
-    /* UI ELEMENTS */
+    /* THEME PANEL */
     .theme-panel { position: fixed; bottom: 20px; right: 20px; z-index: 10000; display: flex; gap: 10px; background: rgba(255,255,255,0.05); padding: 10px; border-radius: 50px; backdrop-filter: blur(10px); }
-    .theme-btn { width: 35px; height: 35px; border-radius: 50%; border: 1px solid rgba(255,255,255,0.2); cursor: pointer; display: flex; align-items: center; justify-content: center; transition: transform 0.2s; }
-    .theme-btn:hover { transform: scale(1.2); }
-    .content-grid { display: grid; grid-template-columns: 2fr 1fr; gap: 4rem; padding: 8rem 4rem; max-width: 1400px; margin: 0 auto; }
-    .card { background: var(--card); padding: 2.5rem; border: 1px solid rgba(201,168,76,0.1); transition: 0.3s; }
-    .reveal { opacity: 0; transform: translateY(30px); transition: 0.8s; }
-    .reveal.visible { opacity: 1; transform: none; }
-    footer { border-top: 1px solid rgba(255,255,255,0.06); padding: 3rem; text-align: center; font-size: 0.8rem; color: var(--muted); }
+    .theme-btn { width: 35px; height: 35px; border-radius: 50%; border: 1px solid rgba(255,255,255,0.2); cursor: pointer; display: flex; align-items: center; justify-content: center; }
+
+    footer { border-top: 1px solid rgba(255,255,255,0.06); padding: 3rem; text-align: center; color: var(--muted); font-size: 0.8rem; }
   </style>
 </head>
 <body id="body">
@@ -129,62 +129,38 @@
   </nav>
 
   <section class="hero">
-  <!-- Dekorasi Natal: Santa & Moon -->
-  <div id="christmas-decor" class="event-decoration">
-    <div class="moon-glow"></div>
-    <div class="santa-silhouette"></div>
-  </div>
+    <!-- Dekorasi Natal -->
+    <div id="christmas-decor" class="event-decoration">
+      <div class="moon"></div>
+      <div class="santa-fly"></div>
+    </div>
 
-  <!-- Dekorasi Ramadhan: Siluet Padang Pasir -->
-  <div id="ramadhan-decor" class="event-decoration">
-    <svg class="desert-svg" viewBox="0 0 100 100">
-      <path d="M10,90 Q30,60 50,90 T90,90" fill="none" stroke="currentColor" stroke-width="0.5"/>
-      <!-- Pohon Kurma Sederhana dari Garis -->
-      <path d="M80,90 L80,70 M80,70 L70,65 M80,70 L90,65 M80,75 L75,72 M80,75 L85,72" stroke="currentColor" fill="none" />
-      <!-- Unta Sederhana -->
-      <path d="M40,90 L42,85 Q45,80 50,85 L55,85 L57,90" stroke="currentColor" fill="none" />
-    </svg>
-  </div>
+    <!-- Dekorasi Ramadhan -->
+    <div id="ramadhan-decor" class="event-decoration">
+      <div class="palm-tree"></div>
+      <div class="camel"></div>
+    </div>
 
-  <!-- Dekorasi Imlek: Naga Berliuk -->
-  <div id="imlek-decor" class="event-decoration">
-    <svg class="dragon-svg" viewBox="0 0 200 100">
-      <path d="M0,50 Q25,20 50,50 T100,50 T150,50 T200,50" fill="none" stroke="var(--gold)" stroke-width="2" stroke-dasharray="5 5">
-        <animate attributeName="stroke-dashoffset" from="100" to="0" dur="5s" repeatCount="indefinite" />
-      </path>
-      <circle cx="200" cy="50" r="5" fill="var(--gold)" /> <!-- Kepala Naga -->
-    </svg>
-  </div>
+    <!-- Dekorasi Imlek -->
+    <div id="imlek-decor" class="event-decoration">
+      <div class="dragon"></div>
+    </div>
 
-  <p style="color:var(--gold); letter-spacing:0.3em; text-transform:uppercase; font-size:0.7rem; margin-bottom:1rem; z-index:5;">✦ Premium Automotive Parts</p>
-  <h1 class="hero-title">Performa Maksimal<br>Untuk <em id="event-text">Kendaraan</em> Anda.</h1>
-  <p class="hero-sub">Pusat penyedia suku cadang original berkualitas tinggi untuk keamanan dan kenyamanan berkendara yang tak tertandingi.</p>
-</section>
-  <div class="content-grid">
-    <main class="reveal">
-      <h2 style="margin-bottom:2rem; font-family:'Playfair Display'; font-size:2.5rem;">Tentang Kami</h2>
-      <div class="card">
-        <p>Selamat datang di <strong>Garasi Part</strong>. Kami adalah mitra terpercaya Anda dalam menyediakan komponen mesin hingga aksesoris interior.</p>
-      </div>
-    </main>
-    <aside class="reveal">
-      <div class="card">
-        <h3 style="color:var(--gold); font-size:0.8rem; text-transform:uppercase; margin-bottom:1rem;">Lokasi Toko</h3>
-        <p>Jl. Warakas Raya Gg. 2A No. 7B<br>Jakarta Utara</p>
-      </div>
-    </aside>
-  </div>
+    <p style="color:var(--gold); letter-spacing:0.3em; text-transform:uppercase; font-size:0.7rem; margin-bottom:1.5rem; z-index:5;">✦ Premium Automotive Parts</p>
+    <h1 class="hero-title">Performa Maksimal<br>Untuk <em id="event-text">Kendaraan</em> Anda.</h1>
+    <p class="hero-sub">Pusat penyedia suku cadang original berkualitas tinggi untuk keamanan dan kenyamanan berkendara yang tak tertandingi.</p>
+  </section>
 
   <footer>
     <p>&copy; 2026 Rizal Kusuma (1324001). All Rights Reserved.</p>
   </footer>
 
   <script>
-    const body = document.getElementById('body');
-    const eventText = document.getElementById('event-text');
-
     function setTheme(theme) {
+      const body = document.getElementById('body');
+      const eventText = document.getElementById('event-text');
       body.classList.remove('theme-christmas', 'theme-ramadhan', 'theme-imlek');
+      
       if (theme === 'christmas') {
         body.classList.add('theme-christmas');
         eventText.innerText = "Natal & Tahun Baru";
@@ -199,7 +175,7 @@
       }
     }
 
-    // Cursor Logic
+    // Cursor Movement
     const cursor = document.getElementById('cursor');
     const trail = document.getElementById('cursorTrail');
     let mx = 0, my = 0, tx = 0, ty = 0;
@@ -210,17 +186,11 @@
     });
 
     function animateTrail() {
-      tx += (mx - tx) * 0.12; ty += (my - ty) * 0.12;
+      tx += (mx - tx) * 0.1; ty += (my - ty) * 0.1;
       trail.style.left = tx + 'px'; trail.style.top = ty + 'px';
       requestAnimationFrame(animateTrail);
     }
     animateTrail();
-
-    // Scroll Reveal
-    const observer = new IntersectionObserver((entries) => {
-      entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('visible'); });
-    }, { threshold: 0.1 });
-    document.querySelectorAll('.reveal').forEach(r => observer.observe(r));
   </script>
 </body>
 </html>
