@@ -6,61 +6,80 @@
   <title>GARASI PART — Solusi Suku Cadang Otomotif</title>
   <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet"/>
   <style>
+    /* RESET & VARIABLES */
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-    :root { --bg: #0a0a0a; --gold: #c9a84c; --text: #e8e4dc; --muted: #666; }
 
+    :root {
+      --bg: #0a0a0a;
+      --surface: #111111;
+      --card: #161616;
+      --gold: #c9a84c;
+      --gold-light: #e8c96d;
+      --text: #e8e4dc;
+      --muted: #666;
+    }
+
+    /* THEME STATES */
     body.theme-christmas { --bg: #0a1a12; --gold: #d42426; }
     body.theme-ramadhan { --bg: #06140a; --gold: #39e75f; }
     body.theme-imlek { --bg: #1a0505; --gold: #ee1c25; }
 
-    body { background: var(--bg); color: var(--text); font-family: 'DM Sans', sans-serif; overflow-x: hidden; cursor: none; transition: background 0.8s ease; }
+    html { scroll-behavior: smooth; }
+
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: 'DM Sans', sans-serif;
+      font-weight: 300;
+      overflow-x: hidden;
+      cursor: none;
+      transition: background 0.8s ease;
+    }
 
     /* CUSTOM CURSOR */
-    .cursor { position: fixed; width: 12px; height: 12px; background: var(--gold); border-radius: 50%; pointer-events: none; z-index: 9999; transform: translate(-50%, -50%); }
-    .cursor-trail { position: fixed; width: 36px; height: 36px; border: 1px solid var(--gold); border-radius: 50%; pointer-events: none; z-index: 9998; transform: translate(-50%, -50%); opacity: 0.4; }
+    .cursor { position: fixed; width: 12px; height: 12px; background: var(--gold); border-radius: 50%; pointer-events: none; z-index: 9999; transition: transform 0.15s ease; transform: translate(-50%, -50%); }
+    .cursor-trail { position: fixed; width: 36px; height: 36px; border: 1px solid var(--gold); border-radius: 50%; pointer-events: none; z-index: 9998; transition: transform 0.35s ease; transform: translate(-50%, -50%); opacity: 0.4; }
+
+    /* NAVIGATION */
+    nav { position: fixed; top: 0; left: 0; right: 0; z-index: 100; display: flex; align-items: center; justify-content: space-between; padding: 1.6rem 4rem; background: linear-gradient(to bottom, rgba(10,10,10,0.95), transparent); }
+    .nav-logo { font-family: 'Playfair Display', serif; font-size: 1.5rem; font-weight: 900; letter-spacing: 0.15em; color: var(--gold); }
+    .nav-links { display: flex; gap: 2.5rem; list-style: none; }
+    .nav-links a { color: var(--muted); text-decoration: none; font-size: 0.8rem; letter-spacing: 0.12em; text-transform: uppercase; transition: color 0.3s; }
 
     /* HERO SECTION */
-    .hero { min-height: 100vh; display: flex; flex-direction: column; justify-content: center; padding: 0 4rem; position: relative; overflow: hidden; }
-    .hero-title { font-family: 'Playfair Display', serif; font-size: clamp(3rem, 7vw, 6rem); font-weight: 900; line-height: 0.95; z-index: 10; position: relative; }
+    .hero { min-height: 100vh; display: flex; flex-direction: column; justify-content: center; padding: 0 4rem; position: relative; background: radial-gradient(circle at 70% 30%, rgba(201,168,76,0.08) 0%, transparent 60%); overflow: hidden; }
+    .hero-title { font-family: 'Playfair Display', serif; font-size: clamp(3rem, 7vw, 6rem); font-weight: 900; line-height: 0.95; margin-bottom: 2rem; position: relative; z-index: 10; }
     .hero-title em { font-style: italic; color: var(--gold); }
-    .hero-sub { max-width: 500px; color: var(--muted); margin-top: 2rem; z-index: 10; position: relative; }
-
-    /* --- REAL ASSET DECORATIONS --- */
-    .event-decoration { position: absolute; inset: 0; pointer-events: none; z-index: 1; display: none; }
-
-    /* 1. CHRISTMAS: Santa & Reindeers */
-    body.theme-christmas #christmas-decor { display: block; }
-    .moon { position: absolute; top: 10%; right: 10%; width: 150px; height: 150px; background: #fffce0; border-radius: 50%; box-shadow: 0 0 100px rgba(255,252,224,0.3); }
-    .santa-asset { position: absolute; width: 350px; top: 20%; filter: drop-shadow(0 0 15px white); animation: flyAround 18s linear infinite; }
-
-    /* 2. RAMADHAN: Camel & Palm Tree */
-    body.theme-ramadhan #ramadhan-decor { display: block; }
-    .palm-asset { position: absolute; bottom: 0; right: 5%; width: 220px; fill: white; opacity: 0.2; animation: sway 7s ease-in-out infinite; transform-origin: bottom; }
-    .camel-asset { position: absolute; bottom: 30px; right: 15%; width: 140px; fill: white; opacity: 0.3; animation: walk 12s ease-in-out infinite; }
-
-    /* 3. IMLEK: Imperial Dragon */
-    body.theme-imlek #imlek-decor { display: block; }
-    .dragon-asset { position: absolute; width: 600px; top: 30%; fill: #ee1c25; filter: drop-shadow(0 0 30px rgba(238,28,37,0.6)); animation: dragonMove 22s linear infinite; }
-
-    /* KEYFRAMES */
-    @keyframes flyAround { 
-        0% { left: 110%; transform: rotate(-5deg); } 
-        50% { transform: translateY(-60px) rotate(2deg); }
-        100% { left: -50%; transform: rotate(-5deg); } 
-    }
-    @keyframes sway { 0%, 100% { transform: rotate(-2deg); } 50% { transform: rotate(2deg); } }
-    @keyframes walk { 0%, 100% { transform: translateX(0); } 50% { transform: translateX(-60px); } }
-    @keyframes dragonMove { 
-        0% { left: -60%; transform: scaleX(1) translateY(0); } 
-        50% { transform: scaleX(1.1) translateY(-100px); } 
-        100% { left: 110%; transform: scaleX(1) translateY(0); } 
-    }
-
-    /* UI PANEL */
-    .theme-panel { position: fixed; bottom: 20px; right: 20px; z-index: 10000; display: flex; gap: 10px; background: rgba(255,255,255,0.05); padding: 10px; border-radius: 50px; backdrop-filter: blur(10px); }
-    .theme-btn { width: 35px; height: 35px; border-radius: 50%; border: 1px solid rgba(255,255,255,0.2); cursor: pointer; display: flex; align-items: center; justify-content: center; color: white; }
     
-    footer { padding: 3rem; text-align: center; color: var(--muted); font-size: 0.8rem; border-top: 1px solid rgba(255,255,255,0.05); }
+    /* --- EVENT ASSETS (SVG) --- */
+    .event-decoration { position: absolute; inset: 0; pointer-events: none; z-index: 1; display: none; }
+    
+    /* Christmas */
+    body.theme-christmas #christmas-decor { display: block; }
+    .santa-asset { position: absolute; width: 300px; top: 15%; fill: white; filter: drop-shadow(0 0 10px rgba(255,255,255,0.5)); animation: fly 15s linear infinite; }
+    
+    /* Ramadhan */
+    body.theme-ramadhan #ramadhan-decor { display: block; }
+    .camel-asset { position: absolute; width: 120px; bottom: 10%; right: 15%; fill: white; opacity: 0.3; animation: walk 12s ease-in-out infinite; }
+    
+    /* Imlek */
+    body.theme-imlek #imlek-decor { display: block; }
+    .dragon-asset { position: absolute; width: 500px; top: 25%; fill: var(--gold); filter: drop-shadow(0 0 20px rgba(238,28,37,0.5)); animation: dragon 20s linear infinite; }
+
+    /* ANIMATIONS */
+    @keyframes fly { from { left: 110%; } to { left: -40%; } }
+    @keyframes walk { 0%, 100% { transform: translateX(0); } 50% { transform: translateX(-50px); } }
+    @keyframes dragon { 0% { left: -50%; transform: translateY(0); } 50% { transform: translateY(-50px); } 100% { left: 110%; transform: translateY(0); } }
+
+    /* THEME PANEL */
+    .theme-panel { position: fixed; bottom: 20px; right: 20px; z-index: 10000; display: flex; gap: 10px; background: rgba(255,255,255,0.05); padding: 10px; border-radius: 50px; backdrop-filter: blur(10px); }
+    .theme-btn { width: 35px; height: 35px; border-radius: 50%; border: 1px solid rgba(255,255,255,0.2); cursor: pointer; display: flex; align-items: center; justify-content: center; color: white; transition: 0.3s; }
+    .theme-btn:hover { transform: scale(1.2); }
+
+    /* CONTENT GRID */
+    .content-grid { display: grid; grid-template-columns: 2fr 1fr; gap: 4rem; padding: 8rem 4rem; max-width: 1400px; margin: 0 auto; }
+    .card { background: var(--card); padding: 2.5rem; border: 1px solid rgba(201,168,76,0.1); transition: 0.3s; }
+    footer { border-top: 1px solid rgba(255,255,255,0.06); padding: 3rem 4rem; text-align: center; font-size: 0.75rem; color: var(--muted); }
   </style>
 </head>
 <body id="body">
@@ -68,6 +87,7 @@
   <div class="cursor" id="cursor"></div>
   <div class="cursor-trail" id="cursorTrail"></div>
 
+  <!-- THEME SWITCHER -->
   <div class="theme-panel">
     <button class="theme-btn" style="background:#c9a84c" onclick="setTheme('default')">⚙</button>
     <button class="theme-btn" style="background:#d42426" onclick="setTheme('christmas')">❄</button>
@@ -75,44 +95,46 @@
     <button class="theme-btn" style="background:#ee1c25" onclick="setTheme('imlek')">🏮</button>
   </div>
 
-  <nav style="position:fixed; top:0; width:100%; padding:2rem 4rem; display:flex; justify-content:space-between; z-index:100;">
-    <div style="font-family:'Playfair Display'; font-weight:900; color:var(--gold); letter-spacing:2px;">GARASI PART</div>
+  <nav>
+    <div class="nav-logo">GARASI PART</div>
+    <ul class="nav-links">
+      <li><a href="#">Home</a></li>
+      <li><a href="#">Product</a></li>
+      <li><a href="#">Contact Us</a></li>
+    </ul>
   </nav>
 
   <section class="hero">
-    <!-- CHRISTMAS ASSETS -->
+    <!-- DECORATIONS -->
     <div id="christmas-decor" class="event-decoration">
-      <div class="moon"></div>
-      <svg class="santa-asset" viewBox="0 0 512 512" fill="white">
-        <path d="M504 160c-2.4 0-4.8 .2-7.2 .6C480.9 69.8 401 0 304 0C215.1 0 141.4 58.7 117.2 138.8c-24.2-12.7-52-19.8-81.2-19.8C16.1 119 0 135.1 0 155c0 10.4 4.4 20.3 12.1 27.2l82.7 74.4c-6.8 23.4-10.8 48.1-10.8 73.4 0 101.6 65.6 182 146.7 182s146.7-80.4 146.7-182c0-21.6-2.9-42.5-8.4-62.4l41.6-11.4c17.5-4.8 29.5-20.7 29.5-38.9 0-21.1-17.1-38.2-38.2-38.2z"/>
-        <circle cx="150" cy="200" r="20" fill="white" /> <!-- Sleigh siluet simple -->
-        <rect x="200" y="190" width="100" height="40" rx="10" fill="white" />
-      </svg>
+        <svg class="santa-asset" viewBox="0 0 512 512"><path d="M495.9 166.6c3.1 11.5 7.3 22.5 12.1 32.8-15.1 5.8-30.8 10.4-46.9 13.8 2.3-15.3 3.5-31 3.5-47 0-21.7-2.1-42.9-6.2-63.5 16.2 3.4 31.9 8.1 46.9 13.9-4.8 10.3-9 21.3-12.1 32.8l2.7 17.2zM256 0c141.4 0 256 114.6 256 256S397.4 512 256 512 0 397.4 0 256 114.6 0 256 0z"/></svg>
     </div>
-
-    <!-- RAMADHAN ASSETS -->
     <div id="ramadhan-decor" class="event-decoration">
-      <svg class="palm-asset" viewBox="0 0 24 24">
-        <path d="M12 2C10 2 8 4 8 6C8 7.33 8.67 8.5 9.71 9.21L9 15H15L14.29 9.21C15.33 8.5 16 7.33 16 6C16 4 14 2 12 2M12 17C12 17 11 18 11 20V22H13V20C13 18 12 17 12 17M6 7C5.45 7 5 7.45 5 8C5 9.1 4.1 10 3 10S1 9.1 1 8C1 5.24 3.24 3 6 3S11 5.24 11 8C11 9.1 10.1 10 9 10S7 9.1 7 8C7 7.45 6.55 7 6 7M18 7C17.45 7 17 7.45 17 8C17 9.1 16.1 10 15 10S13 9.1 13 8C13 5.24 15.24 3 18 3S23 5.24 23 8C23 9.1 22.1 10 21 10S19 9.1 19 8C19 7.45 18.55 7 18 7Z"/>
-      </svg>
-      <svg class="camel-asset" viewBox="0 0 24 24">
-        <path d="M22,14C22,14 21,11 19,11C17,11 16,13 14,13C12,13 11,10 8,10C5,10 3,12 3,14C3,14 2,14 2,15C2,16 3,17 4,17C5,17 6,16 6,15C6,15 7,14 8,14C9,14 10,15 11,15C12,15 13,14 14,14C15,14 16,15 18,15C20,15 21,14 22,14M18,9C18,8.45 17.55,8 17,8C16.45,8 16,8.45 16,9C16,9.55 16.45,10 17,10C17.55,10 18,9.55 18,9Z"/>
-      </svg>
+        <svg class="camel-asset" viewBox="0 0 24 24"><path d="M22,14C22,14 21,11 19,11C17,11 16,13 14,13C12,13 11,10 8,10C5,10 3,12 3,14C3,14 2,14 2,15C2,16 3,17 4,17C5,17 6,16 6,15C6,15 7,14 8,14C9,14 10,15 11,15C12,15 13,14 14,14C15,14 16,15 18,15C20,15 21,14 22,14M18,9C18,8.45 17.55,8 17,8C16.45,8 16,8.45 16,9C16,9.55 16.45,10 17,10C17.55,10 18,9.55 18,9Z"/></svg>
     </div>
-
-    <!-- IMLEK ASSETS -->
     <div id="imlek-decor" class="event-decoration">
-      <svg class="dragon-asset" viewBox="0 0 100 60">
-        <path d="M10,30 Q25,5 40,30 T70,30 T100,30" fill="none" stroke="#ee1c25" stroke-width="2" />
-        <path d="M5,25 L15,35 L15,25 Z M90,25 L100,35 L100,25 Z" fill="#ee1c25" />
-        <circle cx="95" cy="30" r="3" fill="#ffcc00" />
-      </svg>
+        <svg class="dragon-asset" viewBox="0 0 100 40"><path d="M5,20 Q25,0 45,20 T85,20" fill="none" stroke="currentColor" stroke-width="2"/></svg>
     </div>
 
-    <p style="color:var(--gold); letter-spacing:0.3em; text-transform:uppercase; font-size:0.7rem; margin-bottom:1rem;">✦ Premium Automotive Parts</p>
+    <p style="color:var(--gold); letter-spacing:0.3em; text-transform:uppercase; font-size:0.7rem; margin-bottom:1.5rem; z-index:10;">✦ Premium Automotive Parts</p>
     <h1 class="hero-title">Performa Maksimal<br>Untuk <em id="event-text">Kendaraan</em> Anda.</h1>
-    <p class="hero-sub">Pusat penyedia suku cadang original berkualitas tinggi untuk keamanan berkendara yang tak tertandingi.</p>
+    <p style="max-width:500px; color:var(--muted); z-index:10;">Pusat penyedia suku cadang original berkualitas tinggi untuk keamanan berkendara yang tak tertandingi.</p>
   </section>
+
+  <div class="content-grid">
+    <main>
+      <h2 style="font-family:'Playfair Display'; font-size:2.5rem; margin-bottom:1.5rem;">Tentang Kami</h2>
+      <div class="card">
+        <p>Visi kami sederhana: Memberikan pelayanan prima dan produk original untuk memastikan setiap perjalanan Anda aman dan nyaman.</p>
+      </div>
+    </main>
+    <aside>
+      <div class="card">
+        <h3 style="color:var(--gold); font-size:0.8rem; letter-spacing:0.2em; text-transform:uppercase;">Lokasi Toko</h3>
+        <p>Jl. Warakas Raya Gg. 2A No. 7B, Jakarta Utara</p>
+      </div>
+    </aside>
+  </div>
 
   <footer>
     <p>&copy; 2026 Rizal Kusuma (1324001). All Rights Reserved.</p>
@@ -148,7 +170,7 @@
     });
 
     function animateTrail() {
-      tx += (mx - tx) * 0.1; ty += (my - ty) * 0.1;
+      tx += (mx - tx) * 0.12; ty += (my - ty) * 0.12;
       trail.style.left = tx + 'px'; trail.style.top = ty + 'px';
       requestAnimationFrame(animateTrail);
     }
