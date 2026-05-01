@@ -129,29 +129,37 @@
   </nav>
 
   <section class="hero">
-    <!-- Dekorasi Natal -->
-    <div id="christmas-decor" class="event-decoration">
-      <div class="moon-glow"></div>
-      <div class="santa-wrapper">🎅🛷💨 🦌 🦌 🦌</div>
-    </div>
+  <!-- Dekorasi Natal: Santa & Moon -->
+  <div id="christmas-decor" class="event-decoration">
+    <div class="moon-glow"></div>
+    <div class="santa-silhouette"></div>
+  </div>
 
-    <!-- Dekorasi Ramadhan -->
-    <div id="ramadhan-decor" class="event-decoration">
-      <div class="palm-tree">🌴</div>
-      <div class="camel">🐫</div>
-    </div>
+  <!-- Dekorasi Ramadhan: Siluet Padang Pasir -->
+  <div id="ramadhan-decor" class="event-decoration">
+    <svg class="desert-svg" viewBox="0 0 100 100">
+      <path d="M10,90 Q30,60 50,90 T90,90" fill="none" stroke="currentColor" stroke-width="0.5"/>
+      <!-- Pohon Kurma Sederhana dari Garis -->
+      <path d="M80,90 L80,70 M80,70 L70,65 M80,70 L90,65 M80,75 L75,72 M80,75 L85,72" stroke="currentColor" fill="none" />
+      <!-- Unta Sederhana -->
+      <path d="M40,90 L42,85 Q45,80 50,85 L55,85 L57,90" stroke="currentColor" fill="none" />
+    </svg>
+  </div>
 
-    <!-- Dekorasi Imlek -->
-    <div id="imlek-decor" class="event-decoration">
-      <div class="cloud-group"><span>☁️</span><span>☁️</span><span>☁️</span><span>☁️</span></div>
-      <div class="dragon-spirit">🐉<span style="letter-spacing:-5px">~~~~~~~~</span>🐉</div>
-    </div>
+  <!-- Dekorasi Imlek: Naga Berliuk -->
+  <div id="imlek-decor" class="event-decoration">
+    <svg class="dragon-svg" viewBox="0 0 200 100">
+      <path d="M0,50 Q25,20 50,50 T100,50 T150,50 T200,50" fill="none" stroke="var(--gold)" stroke-width="2" stroke-dasharray="5 5">
+        <animate attributeName="stroke-dashoffset" from="100" to="0" dur="5s" repeatCount="indefinite" />
+      </path>
+      <circle cx="200" cy="50" r="5" fill="var(--gold)" /> <!-- Kepala Naga -->
+    </svg>
+  </div>
 
-    <p style="color:var(--gold); letter-spacing:0.3em; text-transform:uppercase; font-size:0.7rem; margin-bottom:1rem; z-index:5;">✦ Premium Automotive Parts</p>
-    <h1 class="hero-title">Performa Maksimal<br>Untuk <em id="event-text">Kendaraan</em> Anda.</h1>
-    <p class="hero-sub">Pusat penyedia suku cadang original berkualitas tinggi untuk keamanan dan kenyamanan berkendara yang tak tertandingi.</p>
-  </section>
-
+  <p style="color:var(--gold); letter-spacing:0.3em; text-transform:uppercase; font-size:0.7rem; margin-bottom:1rem; z-index:5;">✦ Premium Automotive Parts</p>
+  <h1 class="hero-title">Performa Maksimal<br>Untuk <em id="event-text">Kendaraan</em> Anda.</h1>
+  <p class="hero-sub">Pusat penyedia suku cadang original berkualitas tinggi untuk keamanan dan kenyamanan berkendara yang tak tertandingi.</p>
+</section>
   <div class="content-grid">
     <main class="reveal">
       <h2 style="margin-bottom:2rem; font-family:'Playfair Display'; font-size:2.5rem;">Tentang Kami</h2>
