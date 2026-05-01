@@ -50,26 +50,55 @@
     .hero-title { font-family: 'Playfair Display', serif; font-size: clamp(3rem, 7vw, 6rem); font-weight: 900; line-height: 0.95; margin-bottom: 2rem; position: relative; z-index: 10; }
     .hero-title em { font-style: italic; color: var(--gold); }
     
-    /* --- EVENT ASSETS (SVG) --- */
-    .event-decoration { position: absolute; inset: 0; pointer-events: none; z-index: 1; display: none; }
-    
-    /* Christmas: Santa Sleigh */
-    body.theme-christmas #christmas-decor { display: block; }
-    .santa-asset { position: absolute; width: 350px; top: 15%; fill: #fff; filter: drop-shadow(0 0 15px rgba(255,255,255,0.4)); animation: fly 18s linear infinite; }
-    
-    /* Ramadhan: Camel & Palm Tree */
-    body.theme-ramadhan #ramadhan-decor { display: block; }
-    .camel-asset { position: absolute; width: 150px; bottom: 8%; right: 10%; fill: #fff; opacity: 0.25; animation: walk 10s ease-in-out infinite; }
-    .palm-asset { position: absolute; width: 200px; bottom: 0; right: 2%; fill: #fff; opacity: 0.15; }
-    
-    /* Imlek: Chinese Dragon */
-    body.theme-imlek #imlek-decor { display: block; }
-    .dragon-asset { position: absolute; width: 600px; top: 20%; fill: #ee1c25; filter: drop-shadow(0 0 25px rgba(238,28,37,0.6)); animation: dragon 22s linear infinite; }
+   /* CSS UNTUK GAMBAR EVENT */
+    .event-decoration img {
+      position: absolute;
+      pointer-events: none;
+      z-index: 1;
+    }
 
-    /* ANIMATIONS */
-    @keyframes fly { from { left: 110%; transform: rotate(-5deg); } to { left: -50%; transform: rotate(5deg); } }
-    @keyframes walk { 0%, 100% { transform: translateX(0) scaleX(1); } 50% { transform: translateX(-80px) scaleX(1); } }
-    @keyframes dragon { 0% { left: -60%; transform: translateY(0); } 50% { transform: translateY(-70px); } 100% { left: 110%; transform: translateY(0); } }
+    /* Santa Claus */
+    .santa-asset {
+      width: 280px;
+      top: 10%;
+      animation: fly 12s linear infinite;
+    }
+
+    /* Unta & Lentera */
+    .camel-asset {
+      width: 250px;
+      bottom: 5%;
+      right: 10%;
+      filter: drop-shadow(0 0 10px rgba(57, 231, 95, 0.3));
+      animation: walk 8s ease-in-out infinite;
+    }
+    .lantern-asset {
+      width: 100px;
+      top: 15%;
+      right: 5%;
+      animation: swing 3s ease-in-out infinite;
+      transform-origin: top center;
+    }
+
+    /* Naga Imlek */
+    .dragon-asset {
+      width: 450px;
+      top: 15%;
+      filter: drop-shadow(0 0 20px rgba(238, 28, 37, 0.4));
+      animation: dragon-float 15s linear infinite;
+    }
+
+    /* KEYFRAMES BARU */
+    @keyframes swing {
+      0%, 100% { transform: rotate(-10deg); }
+      50% { transform: rotate(10deg); }
+    }
+
+    @keyframes dragon-float {
+      0% { left: -50%; transform: scaleX(1) translateY(0); }
+      50% { transform: scaleX(1) translateY(-30px); }
+      100% { left: 110%; transform: scaleX(1) translateY(0); }
+    }
 
     /* THEME PANEL */
     .theme-panel { position: fixed; bottom: 20px; right: 20px; z-index: 10000; display: flex; gap: 10px; background: rgba(255,255,255,0.05); padding: 10px; border-radius: 50px; backdrop-filter: blur(10px); }
@@ -103,25 +132,21 @@
   </nav>
 
   <section class="hero">
-    <!-- CHRISTMAS DECOR -->
+    <!-- CHRISTMAS DECOR (Santa Claus & Snow) -->
     <div id="christmas-decor" class="event-decoration">
-      <svg class="santa-asset" viewBox="0 0 512 512">
-        <path d="M495.9 166.6c3.1 11.5 7.3 22.5 12.1 32.8-15.1 5.8-30.8 10.4-46.9 13.8 2.3-15.3 3.5-31 3.5-47 0-21.7-2.1-42.9-6.2-63.5 16.2 3.4 31.9 8.1 46.9 13.9-4.8 10.3-9 21.3-12.1 32.8l2.7 17.2zM256 0c141.4 0 256 114.6 256 256S397.4 512 256 512 0 397.4 0 256 114.6 0 256 0z"/>
-      </svg>
+      <img src="https://img.icons8.com/plasticine/400/santa.png" class="santa-asset" alt="Santa Claus">
+      <div class="snow-particles"></div>
     </div>
 
-    <!-- RAMADHAN DECOR -->
+    <!-- RAMADHAN DECOR (Camel & Lantern) -->
     <div id="ramadhan-decor" class="event-decoration">
-      <svg class="palm-asset" viewBox="0 0 24 24"><path d="M12,2A10,10 0 0,0 2,12A10,10 0 0,0 12,22A10,10 0 0,0 22,12A10,10 0 0,0 12,2M12,4A8,8 0 0,1 20,12A8,8 0 0,1 12,20A8,8 0 0,1 4,12A8,8 0 0,1 12,4M12,6V18M6,12H18"/></svg>
-      <svg class="camel-asset" viewBox="0 0 24 24"><path d="M22,14C22,14 21,11 19,11C17,11 16,13 14,13C12,13 11,10 8,10C5,10 3,12 3,14C3,14 2,14 2,15C2,16 3,17 4,17C5,17 6,16 6,15C6,15 7,14 8,14C9,14 10,15 11,15C12,15 13,14 14,14C15,14 16,15 18,15C20,15 21,14 22,14M18,9C18,8.45 17.55,8 17,8C16.45,8 16,8.45 16,9C16,9.55 16.45,10 17,10C17.55,10 18,9.55 18,9Z"/></svg>
+      <img src="https://img.icons8.com/clouds/400/camel.png" class="camel-asset" alt="Camel">
+      <img src="https://img.icons8.com/color/200/ramadan-lantern.png" class="lantern-asset" alt="Lantern">
     </div>
 
-    <!-- IMLEK DECOR -->
+    <!-- IMLEK DECOR (Chinese Dragon) -->
     <div id="imlek-decor" class="event-decoration">
-      <svg class="dragon-asset" viewBox="0 0 100 40">
-        <path d="M5,20 Q15,0 25,20 T45,20 T65,20 T85,20" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round"/>
-        <circle cx="90" cy="20" r="4" fill="currentColor"/>
-      </svg>
+      <img src="https://img.icons8.com/color/500/dragon.png" class="dragon-asset" alt="Dragon">
     </div>
 
     <p style="color:var(--gold); letter-spacing:0.3em; text-transform:uppercase; font-size:0.7rem; margin-bottom:1.5rem; z-index:10;">✦ Premium Automotive Parts</p>
