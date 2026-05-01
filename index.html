@@ -6,7 +6,7 @@
   <title>GARASI PART — Solusi Suku Cadang Otomotif</title>
   <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet"/>
   <style>
-    /* RESET & VARIABLES */
+    /* --- RESET & VARIABLES --- */
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
     :root {
@@ -18,7 +18,7 @@
       --muted: #666;
     }
 
-    /* THEME STATES */
+    /* --- THEME STATES --- */
     body.theme-christmas { --bg: #0a1a12; --gold: #d42426; }
     body.theme-ramadhan { --bg: #06140a; --gold: #39e75f; }
     body.theme-imlek { --bg: #1a0505; --gold: #ee1c25; }
@@ -35,76 +35,57 @@
       transition: background 0.8s ease;
     }
 
-    /* CUSTOM CURSOR */
+    /* --- CUSTOM CURSOR --- */
     .cursor { position: fixed; width: 12px; height: 12px; background: var(--gold); border-radius: 50%; pointer-events: none; z-index: 9999; transition: transform 0.15s ease; transform: translate(-50%, -50%); }
     .cursor-trail { position: fixed; width: 36px; height: 36px; border: 1px solid var(--gold); border-radius: 50%; pointer-events: none; z-index: 9998; transition: transform 0.35s ease; transform: translate(-50%, -50%); opacity: 0.4; }
 
-    /* NAVIGATION */
+    /* --- NAVIGATION --- */
     nav { position: fixed; top: 0; left: 0; right: 0; z-index: 100; display: flex; align-items: center; justify-content: space-between; padding: 1.6rem 4rem; background: linear-gradient(to bottom, rgba(10,10,10,0.95), transparent); }
     .nav-logo { font-family: 'Playfair Display', serif; font-size: 1.5rem; font-weight: 900; letter-spacing: 0.15em; color: var(--gold); }
     .nav-links { display: flex; gap: 2.5rem; list-style: none; }
     .nav-links a { color: var(--muted); text-decoration: none; font-size: 0.8rem; letter-spacing: 0.12em; text-transform: uppercase; transition: color 0.3s; }
 
-    /* HERO SECTION */
+    /* --- HERO SECTION --- */
     .hero { min-height: 100vh; display: flex; flex-direction: column; justify-content: center; padding: 0 4rem; position: relative; background: radial-gradient(circle at 70% 30%, rgba(201,168,76,0.08) 0%, transparent 60%); overflow: hidden; }
     .hero-title { font-family: 'Playfair Display', serif; font-size: clamp(3rem, 7vw, 6rem); font-weight: 900; line-height: 0.95; margin-bottom: 2rem; position: relative; z-index: 10; }
     .hero-title em { font-style: italic; color: var(--gold); }
     
-   /* CSS UNTUK GAMBAR EVENT */
-    .event-decoration img {
-      position: absolute;
-      pointer-events: none;
-      z-index: 1;
+    /* --- EVENT DECORATIONS LOGIC --- */
+    .event-decoration { display: none; position: absolute; inset: 0; pointer-events: none; }
+
+    /* Menampilkan dekorasi hanya saat tema aktif */
+    body.theme-christmas #christmas-decor { display: block; }
+    body.theme-ramadhan #ramadhan-decor { display: block; }
+    body.theme-imlek #imlek-decor { display: block; }
+
+    .event-decoration img { position: absolute; pointer-events: none; z-index: 1; }
+
+    /* Christmas Asset */
+    .santa-asset { width: 280px; top: 10%; animation: fly 12s linear infinite; }
+    @keyframes fly { 
+      from { left: 110%; transform: rotate(-5deg); } 
+      to { left: -30%; transform: rotate(5deg); } 
     }
 
-    /* Santa Claus */
-    .santa-asset {
-      width: 280px;
-      top: 10%;
-      animation: fly 12s linear infinite;
-    }
+    /* Ramadhan Assets */
+    .camel-asset { width: 250px; bottom: 5%; right: 10%; animation: walk 8s ease-in-out infinite; }
+    .lantern-asset { width: 100px; top: 15%; right: 5%; animation: swing 3s ease-in-out infinite; transform-origin: top center; }
+    @keyframes walk { 0%, 100% { transform: translateX(0); } 50% { transform: translateX(-50px); } }
+    @keyframes swing { 0%, 100% { transform: rotate(-10deg); } 50% { transform: rotate(10deg); } }
 
-    /* Unta & Lentera */
-    .camel-asset {
-      width: 250px;
-      bottom: 5%;
-      right: 10%;
-      filter: drop-shadow(0 0 10px rgba(57, 231, 95, 0.3));
-      animation: walk 8s ease-in-out infinite;
-    }
-    .lantern-asset {
-      width: 100px;
-      top: 15%;
-      right: 5%;
-      animation: swing 3s ease-in-out infinite;
-      transform-origin: top center;
-    }
-
-    /* Naga Imlek */
-    .dragon-asset {
-      width: 450px;
-      top: 15%;
-      filter: drop-shadow(0 0 20px rgba(238, 28, 37, 0.4));
-      animation: dragon-float 15s linear infinite;
-    }
-
-    /* KEYFRAMES BARU */
-    @keyframes swing {
-      0%, 100% { transform: rotate(-10deg); }
-      50% { transform: rotate(10deg); }
-    }
-
+    /* Imlek Asset */
+    .dragon-asset { width: 450px; top: 15%; animation: dragon-float 15s linear infinite; }
     @keyframes dragon-float {
-      0% { left: -50%; transform: scaleX(1) translateY(0); }
-      50% { transform: scaleX(1) translateY(-30px); }
-      100% { left: 110%; transform: scaleX(1) translateY(0); }
+      0% { left: -50%; transform: translateY(0); }
+      50% { transform: translateY(-30px); }
+      100% { left: 110%; transform: translateY(0); }
     }
 
-    /* THEME PANEL */
+    /* --- THEME PANEL --- */
     .theme-panel { position: fixed; bottom: 20px; right: 20px; z-index: 10000; display: flex; gap: 10px; background: rgba(255,255,255,0.05); padding: 10px; border-radius: 50px; backdrop-filter: blur(10px); }
     .theme-btn { width: 35px; height: 35px; border-radius: 50%; border: 1px solid rgba(255,255,255,0.2); cursor: pointer; display: flex; align-items: center; justify-content: center; color: white; transition: 0.3s; }
 
-    /* CONTENT GRID */
+    /* --- CONTENT GRID --- */
     .content-grid { display: grid; grid-template-columns: 2fr 1fr; gap: 4rem; padding: 8rem 4rem; max-width: 1400px; margin: 0 auto; }
     .card { background: var(--card); padding: 2.5rem; border: 1px solid rgba(201,168,76,0.1); }
     footer { border-top: 1px solid rgba(255,255,255,0.06); padding: 3rem 4rem; text-align: center; font-size: 0.75rem; color: var(--muted); }
@@ -112,16 +93,19 @@
 </head>
 <body id="body">
 
+  <!-- Custom Cursor Elements -->
   <div class="cursor" id="cursor"></div>
   <div class="cursor-trail" id="cursorTrail"></div>
 
+  <!-- Theme Switcher Panel -->
   <div class="theme-panel">
-    <button class="theme-btn" style="background:#c9a84c" onclick="setTheme('default')">⚙</button>
-    <button class="theme-btn" style="background:#d42426" onclick="setTheme('christmas')">❄</button>
-    <button class="theme-btn" style="background:#39e75f" onclick="setTheme('ramadhan')">🌙</button>
-    <button class="theme-btn" style="background:#ee1c25" onclick="setTheme('imlek')">🏮</button>
+    <button class="theme-btn" style="background:#c9a84c" onclick="setTheme('default')" title="Default">⚙</button>
+    <button class="theme-btn" style="background:#d42426" onclick="setTheme('christmas')" title="Christmas">❄</button>
+    <button class="theme-btn" style="background:#39e75f" onclick="setTheme('ramadhan')" title="Ramadhan">🌙</button>
+    <button class="theme-btn" style="background:#ee1c25" onclick="setTheme('imlek')" title="Imlek">🏮</button>
   </div>
 
+  <!-- Navigation -->
   <nav>
     <div class="nav-logo">GARASI PART</div>
     <ul class="nav-links">
@@ -131,29 +115,31 @@
     </ul>
   </nav>
 
+  <!-- Hero Section -->
   <section class="hero">
-    <!-- CHRISTMAS DECOR (Santa Claus & Snow) -->
+    <!-- Christmas Decoration -->
     <div id="christmas-decor" class="event-decoration">
       <img src="https://img.icons8.com/plasticine/400/santa.png" class="santa-asset" alt="Santa Claus">
-      <div class="snow-particles"></div>
     </div>
 
-    <!-- RAMADHAN DECOR (Camel & Lantern) -->
+    <!-- Ramadhan Decoration -->
     <div id="ramadhan-decor" class="event-decoration">
       <img src="https://img.icons8.com/clouds/400/camel.png" class="camel-asset" alt="Camel">
       <img src="https://img.icons8.com/color/200/ramadan-lantern.png" class="lantern-asset" alt="Lantern">
     </div>
 
-    <!-- IMLEK DECOR (Chinese Dragon) -->
+    <!-- Imlek Decoration -->
     <div id="imlek-decor" class="event-decoration">
       <img src="https://img.icons8.com/color/500/dragon.png" class="dragon-asset" alt="Dragon">
     </div>
 
+    <!-- Hero Content -->
     <p style="color:var(--gold); letter-spacing:0.3em; text-transform:uppercase; font-size:0.7rem; margin-bottom:1.5rem; z-index:10;">✦ Premium Automotive Parts</p>
     <h1 class="hero-title">Performa Maksimal<br>Untuk <em id="event-text">Kendaraan</em> Anda.</h1>
     <p style="max-width:500px; color:var(--muted); z-index:10;">Pusat penyedia suku cadang original berkualitas tinggi untuk keamanan berkendara yang tak tertandingi.</p>
   </section>
 
+  <!-- Main Content -->
   <div class="content-grid">
     <main>
       <h2 style="font-family:'Playfair Display'; font-size:2.5rem; margin-bottom:1.5rem;">Tentang Kami</h2>
@@ -170,14 +156,18 @@
     </aside>
   </div>
 
+  <!-- Footer -->
   <footer>
     <p>&copy; 2026 Rizal Kusuma (1324001). All Rights Reserved.</p>
   </footer>
 
   <script>
+    // Logic for Theme Switching
     function setTheme(theme) {
       const body = document.getElementById('body');
       const eventText = document.getElementById('event-text');
+      
+      // Reset classes
       body.classList.remove('theme-christmas', 'theme-ramadhan', 'theme-imlek');
       
       if (theme === 'christmas') {
@@ -194,6 +184,7 @@
       }
     }
 
+    // Custom Cursor Animation
     const cursor = document.getElementById('cursor');
     const trail = document.getElementById('cursorTrail');
     let mx = 0, my = 0, tx = 0, ty = 0;
