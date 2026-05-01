@@ -1,338 +1,180 @@
-/* ═══════════════════════════════
-   EVENT THEMES: NATAL / RAMADAN / IMLEK
-   ═══════════════════════════════ */
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>GARASI PART — Solusi Suku Cadang Otomotif</title>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet"/>
+  <style>
+    /* RESET & VARIABLES */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
-/* Overlay event — muncul di atas semua konten */
-#event-overlay {
-  position: fixed; inset: 0; z-index: 60;
-  pointer-events: none; overflow: hidden;
-}
+    :root {
+      --bg: #0a0a0a;
+      --surface: #111111;
+      --card: #161616;
+      --gold: #c9a84c;
+      --gold-light: #e8c96d;
+      --text: #e8e4dc;
+      --muted: #666;
+    }
 
-/* Tombol switcher event (pojok kiri bawah) */
-.event-switcher {
-  position: fixed; bottom: 2rem; left: 2rem; z-index: 200;
-  display: flex; flex-direction: column; gap: 8px;
-}
-.event-btn {
-  padding: 7px 16px; border-radius: 20px;
-  border: 1px solid #444; background: rgba(10,10,10,0.85);
-  color: #888; font-size: 11px; letter-spacing: 0.12em;
-  text-transform: uppercase; cursor: pointer;
-  transition: all 0.3s; backdrop-filter: blur(4px);
-}
-.event-btn:hover { color: var(--gold); border-color: var(--gold); }
-.event-btn.active-natal   { border-color: #2d7a2d; color: #7ddd7d; background: rgba(5,20,5,0.9); }
-.event-btn.active-ramadan { border-color: var(--gold); color: var(--gold); background: rgba(20,15,0,0.9); }
-.event-btn.active-imlek   { border-color: #cc2200; color: #ff6644; background: rgba(25,0,0,0.9); }
-.event-btn.active-off     { border-color: #444; color: #555; }
+    /* THEME STATES */
+    body.theme-christmas { --bg: #0a1a12; --gold: #d42426; }
+    body.theme-ramadhan { --bg: #06140a; --gold: #39e75f; }
+    body.theme-imlek { --bg: #1a0505; --gold: #ee1c25; }
 
-/* ── NATAL ── */
-.snow-flake {
-  position: absolute; top: -20px; color: #cde8ff;
-  font-size: 14px; pointer-events: none;
-  animation: snowFall linear infinite;
-}
-@keyframes snowFall {
-  to { transform: translateY(110vh) rotate(360deg); opacity: 0; }
-}
-.santa-sleigh {
-  position: absolute; top: 8vh; right: -180px;
-  animation: sleighFly 18s linear infinite;
-  pointer-events: none;
-}
-@keyframes sleighFly {
-  0%   { right: -180px; top: 8vh; }
-  100% { right: 110vw; top: 5vh; }
-}
-.santa-bob { animation: sBob 2s ease-in-out infinite; }
-@keyframes sBob { 0%,100%{transform:translateY(0)} 50%{transform:translateY(-8px)} }
+    html { scroll-behavior: smooth; }
 
-/* ── RAMADAN ── */
-.ramadan-lantern {
-  position: absolute; top: 0;
-  animation: rLantern 3s ease-in-out infinite;
-  transform-origin: top center;
-  pointer-events: none;
-}
-@keyframes rLantern {
-  0%,100% { transform: rotate(-8deg); }
-  50%      { transform: rotate(8deg); }
-}
-.ramadan-star {
-  position: absolute;
-  animation: starBlink 2s ease-in-out infinite;
-  pointer-events: none;
-}
-@keyframes starBlink { 0%,100%{opacity:0.2} 50%{opacity:1} }
-.ramadan-camel {
-  position: absolute; bottom: 0; left: -140px;
-  animation: camelWalk 20s linear infinite;
-  pointer-events: none;
-}
-@keyframes camelWalk { 0%{left:-140px} 100%{left:110vw} }
-.c-leg  { transform-origin: top center; animation: cLeg 0.5s ease-in-out infinite alternate; }
-.c-leg2 { transform-origin: top center; animation: cLeg 0.5s ease-in-out infinite alternate-reverse; }
-@keyframes cLeg { from{transform:rotate(-10deg)} to{transform:rotate(10deg)} }
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: 'DM Sans', sans-serif;
+      font-weight: 300;
+      overflow-x: hidden;
+      cursor: none;
+      transition: background 0.8s ease;
+    }
 
-/* ── IMLEK ── */
-.imlek-lantern {
-  position: absolute; top: 0;
-  animation: iLantern 2.5s ease-in-out infinite;
-  transform-origin: top center;
-  pointer-events: none;
-}
-@keyframes iLantern { 0%,100%{transform:rotate(-10deg)} 50%{transform:rotate(10deg)} }
-.imlek-dragon {
-  position: absolute; top: 15vh; left: -210px;
-  animation: dragonFly 12s linear infinite, dragonBob 1s ease-in-out infinite;
-  pointer-events: none;
-}
-@keyframes dragonFly { 0%{left:-210px} 100%{left:110vw} }
-@keyframes dragonBob { 0%,100%{transform:translateY(0)} 50%{transform:translateY(-14px)} }
-.imlek-firework {
-  position: absolute;
-  animation: fwBurst 2.5s ease-out infinite;
-  pointer-events: none;
-}
-@keyframes fwBurst {
-  0%  { opacity:0; transform:scale(0.3); }
-  25% { opacity:1; transform:scale(1); }
-  100%{ opacity:0; transform:scale(1.6); }
-}
+    /* CUSTOM CURSOR */
+    .cursor { position: fixed; width: 12px; height: 12px; background: var(--gold); border-radius: 50%; pointer-events: none; z-index: 9999; transition: transform 0.15s ease; transform: translate(-50%, -50%); }
+    .cursor-trail { position: fixed; width: 36px; height: 36px; border: 1px solid var(--gold); border-radius: 50%; pointer-events: none; z-index: 9998; transition: transform 0.35s ease; transform: translate(-50%, -50%); opacity: 0.4; }
 
-/* Sembunyikan semua ornamen jika event off */
-#event-overlay.ev-off > * { display: none; }
-<!-- ═══════ TOMBOL PILIH EVENT ═══════ -->
-<div class="event-switcher">
-  <button class="event-btn active-natal"   id="ebtn-natal"   onclick="setEvent('natal')">Natal</button>
-  <button class="event-btn"               id="ebtn-ramadan" onclick="setEvent('ramadan')">Ramadan</button>
-  <button class="event-btn"               id="ebtn-imlek"   onclick="setEvent('imlek')">Imlek</button>
-  <button class="event-btn active-off"    id="ebtn-off"     onclick="setEvent('off')">Off</button>
-</div>
+    /* NAVIGATION */
+    nav { position: fixed; top: 0; left: 0; right: 0; z-index: 100; display: flex; align-items: center; justify-content: space-between; padding: 1.6rem 4rem; background: linear-gradient(to bottom, rgba(10,10,10,0.95), transparent); }
+    .nav-logo { font-family: 'Playfair Display', serif; font-size: 1.5rem; font-weight: 900; letter-spacing: 0.15em; color: var(--gold); }
+    .nav-links { display: flex; gap: 2.5rem; list-style: none; }
+    .nav-links a { color: var(--muted); text-decoration: none; font-size: 0.8rem; letter-spacing: 0.12em; text-transform: uppercase; transition: color 0.3s; }
 
-<!-- ═══════ OVERLAY ORNAMEN EVENT ═══════ -->
-<div id="event-overlay" class="ev-natal">
+    /* HERO SECTION */
+    .hero { min-height: 100vh; display: flex; flex-direction: column; justify-content: center; padding: 0 4rem; position: relative; background: radial-gradient(circle at 70% 30%, rgba(201,168,76,0.08) 0%, transparent 60%); overflow: hidden; }
+    .hero-title { font-family: 'Playfair Display', serif; font-size: clamp(3rem, 7vw, 6rem); font-weight: 900; line-height: 0.95; margin-bottom: 2rem; position: relative; z-index: 10; }
+    .hero-title em { font-style: italic; color: var(--gold); }
+    
+    /* --- EVENT ASSETS (SVG) --- */
+    .event-decoration { position: absolute; inset: 0; pointer-events: none; z-index: 1; display: none; }
+    
+    /* Christmas */
+    body.theme-christmas #christmas-decor { display: block; }
+    .santa-asset { position: absolute; width: 300px; top: 15%; fill: white; filter: drop-shadow(0 0 10px rgba(255,255,255,0.5)); animation: fly 15s linear infinite; }
+    
+    /* Ramadhan */
+    body.theme-ramadhan #ramadhan-decor { display: block; }
+    .camel-asset { position: absolute; width: 120px; bottom: 10%; right: 15%; fill: white; opacity: 0.3; animation: walk 12s ease-in-out infinite; }
+    
+    /* Imlek */
+    body.theme-imlek #imlek-decor { display: block; }
+    .dragon-asset { position: absolute; width: 500px; top: 25%; fill: var(--gold); filter: drop-shadow(0 0 20px rgba(238,28,37,0.5)); animation: dragon 20s linear infinite; }
 
-  <!-- ── NATAL: Salju + Santa ── -->
-  <div id="ev-natal" style="position:absolute;inset:0;pointer-events:none;">
-    <div id="snowWrap"></div>
-    <div class="santa-sleigh">
-      <svg class="santa-bob" width="170" height="65" viewBox="0 0 170 65">
-        <ellipse cx="30" cy="40" rx="16" ry="7" fill="#8B4513"/>
-        <line x1="36" y1="33" x2="38" y2="22" stroke="#8B4513" stroke-width="2.5" stroke-linecap="round"/>
-        <ellipse cx="38" cy="20" rx="5" ry="4" fill="#A0522D"/>
-        <line x1="28" y1="47" x2="24" y2="57" stroke="#8B4513" stroke-width="2" stroke-linecap="round"/>
-        <line x1="34" y1="47" x2="38" y2="57" stroke="#8B4513" stroke-width="2" stroke-linecap="round"/>
-        <path d="M46 38 Q78 22 94 28" stroke="#888" stroke-width="1" fill="none"/>
-        <path d="M94 28 Q110 20 138 24 Q143 37 128 42 Q105 46 94 40Z" fill="#8B0000"/>
-        <path d="M92 40 Q106 52 132 48 Q137 45 128 42" fill="#6B0000"/>
-        <circle cx="118" cy="20" r="7" fill="#FDBCB4"/>
-        <path d="M111 22 Q118 16 125 22 Q118 14 111 22Z" fill="#CC0000"/>
-        <circle cx="118" cy="16" r="3" fill="#fff"/>
-        <ellipse cx="118" cy="30" rx="8" ry="7" fill="#CC0000"/>
-        <ellipse cx="130" cy="26" rx="6" ry="5" fill="#8B6914"/>
-      </svg>
-    </div>
+    /* ANIMATIONS */
+    @keyframes fly { from { left: 110%; } to { left: -40%; } }
+    @keyframes walk { 0%, 100% { transform: translateX(0); } 50% { transform: translateX(-50px); } }
+    @keyframes dragon { 0% { left: -50%; transform: translateY(0); } 50% { transform: translateY(-50px); } 100% { left: 110%; transform: translateY(0); } }
+
+    /* THEME PANEL */
+    .theme-panel { position: fixed; bottom: 20px; right: 20px; z-index: 10000; display: flex; gap: 10px; background: rgba(255,255,255,0.05); padding: 10px; border-radius: 50px; backdrop-filter: blur(10px); }
+    .theme-btn { width: 35px; height: 35px; border-radius: 50%; border: 1px solid rgba(255,255,255,0.2); cursor: pointer; display: flex; align-items: center; justify-content: center; color: white; transition: 0.3s; }
+    .theme-btn:hover { transform: scale(1.2); }
+
+    /* CONTENT GRID */
+    .content-grid { display: grid; grid-template-columns: 2fr 1fr; gap: 4rem; padding: 8rem 4rem; max-width: 1400px; margin: 0 auto; }
+    .card { background: var(--card); padding: 2.5rem; border: 1px solid rgba(201,168,76,0.1); transition: 0.3s; }
+    footer { border-top: 1px solid rgba(255,255,255,0.06); padding: 3rem 4rem; text-align: center; font-size: 0.75rem; color: var(--muted); }
+  </style>
+</head>
+<body id="body">
+
+  <div class="cursor" id="cursor"></div>
+  <div class="cursor-trail" id="cursorTrail"></div>
+
+  <!-- THEME SWITCHER -->
+  <div class="theme-panel">
+    <button class="theme-btn" style="background:#c9a84c" onclick="setTheme('default')">⚙</button>
+    <button class="theme-btn" style="background:#d42426" onclick="setTheme('christmas')">❄</button>
+    <button class="theme-btn" style="background:#39e75f" onclick="setTheme('ramadhan')">🌙</button>
+    <button class="theme-btn" style="background:#ee1c25" onclick="setTheme('imlek')">🏮</button>
   </div>
 
-  <!-- ── RAMADAN: Bulan + Lentera + Unta ── -->
-  <div id="ev-ramadan" style="position:absolute;inset:0;pointer-events:none;display:none;">
-    <!-- Bulan sabit -->
-    <div style="position:absolute;top:20px;right:80px;">
-      <svg width="90" height="90" viewBox="0 0 90 90">
-        <circle cx="45" cy="45" r="35" fill="#c9a84c" opacity="0.85"/>
-        <circle cx="62" cy="32" r="28" fill="#0a0a0a"/>
-        <polygon points="72,18 74.5,26 83,26 76.5,31 79,39 72,34 65,39 67.5,31 61,26 69.5,26" fill="#c9a84c"/>
-      </svg>
+  <nav>
+    <div class="nav-logo">GARASI PART</div>
+    <ul class="nav-links">
+      <li><a href="index.html">Home</a></li>
+      <li><a href="produk.html">Product</a></li>
+      <li><a href="contactus.html">Contact Us</a></li>
+    </ul>
+  </nav>
+
+  <section class="hero">
+    <!-- DECORATIONS -->
+    <div id="christmas-decor" class="event-decoration">
+        <svg class="santa-asset" viewBox="0 0 512 512"><path d="M495.9 166.6c3.1 11.5 7.3 22.5 12.1 32.8-15.1 5.8-30.8 10.4-46.9 13.8 2.3-15.3 3.5-31 3.5-47 0-21.7-2.1-42.9-6.2-63.5 16.2 3.4 31.9 8.1 46.9 13.9-4.8 10.3-9 21.3-12.1 32.8l2.7 17.2zM256 0c141.4 0 256 114.6 256 256S397.4 512 256 512 0 397.4 0 256 114.6 0 256 0z"/></svg>
     </div>
-    <!-- Bintang -->
-    <div class="ramadan-star" style="top:35px;left:90px;animation-delay:0s">
-      <svg width="14" height="14" viewBox="0 0 16 16"><polygon points="8,1 9.5,6 15,6 10.5,9.5 12,15 8,11.5 4,15 5.5,9.5 1,6 6.5,6" fill="#c9a84c"/></svg>
+    <div id="ramadhan-decor" class="event-decoration">
+        <svg class="camel-asset" viewBox="0 0 24 24"><path d="M22,14C22,14 21,11 19,11C17,11 16,13 14,13C12,13 11,10 8,10C5,10 3,12 3,14C3,14 2,14 2,15C2,16 3,17 4,17C5,17 6,16 6,15C6,15 7,14 8,14C9,14 10,15 11,15C12,15 13,14 14,14C15,14 16,15 18,15C20,15 21,14 22,14M18,9C18,8.45 17.55,8 17,8C16.45,8 16,8.45 16,9C16,9.55 16.45,10 17,10C17.55,10 18,9.55 18,9Z"/></svg>
     </div>
-    <div class="ramadan-star" style="top:60px;left:230px;animation-delay:0.6s">
-      <svg width="11" height="11" viewBox="0 0 16 16"><polygon points="8,1 9.5,6 15,6 10.5,9.5 12,15 8,11.5 4,15 5.5,9.5 1,6 6.5,6" fill="#e8c96d"/></svg>
+    <div id="imlek-decor" class="event-decoration">
+        <svg class="dragon-asset" viewBox="0 0 100 40"><path d="M5,20 Q25,0 45,20 T85,20" fill="none" stroke="currentColor" stroke-width="2"/></svg>
     </div>
-    <div class="ramadan-star" style="top:25px;right:200px;animation-delay:1.1s">
-      <svg width="12" height="12" viewBox="0 0 16 16"><polygon points="8,1 9.5,6 15,6 10.5,9.5 12,15 8,11.5 4,15 5.5,9.5 1,6 6.5,6" fill="#c9a84c"/></svg>
-    </div>
-    <!-- Lentera kiri -->
-    <div class="ramadan-lantern" style="left:60px;animation-delay:0s;">
-      <svg width="40" height="90" viewBox="0 0 40 90">
-        <line x1="20" y1="0" x2="20" y2="12" stroke="#c9a84c" stroke-width="1.5"/>
-        <rect x="8" y="12" width="24" height="7" rx="3" fill="#c9a84c"/>
-        <ellipse cx="20" cy="55" rx="14" ry="22" fill="#c9a84c" opacity="0.85"/>
-        <ellipse cx="20" cy="40" rx="12" ry="7" fill="#e8c96d"/>
-        <ellipse cx="20" cy="70" rx="12" ry="7" fill="#e8c96d"/>
-        <line x1="20" y1="77" x2="20" y2="88" stroke="#c9a84c" stroke-width="1.5"/>
-        <line x1="14" y1="88" x2="26" y2="88" stroke="#c9a84c" stroke-width="1.5"/>
-      </svg>
-    </div>
-    <!-- Lentera kanan -->
-    <div class="ramadan-lantern" style="right:60px;animation-delay:1s;">
-      <svg width="36" height="80" viewBox="0 0 40 90">
-        <line x1="20" y1="0" x2="20" y2="12" stroke="#c9a84c" stroke-width="1.5"/>
-        <rect x="8" y="12" width="24" height="7" rx="3" fill="#c9a84c"/>
-        <ellipse cx="20" cy="55" rx="14" ry="22" fill="#9B7A1A" opacity="0.85"/>
-        <ellipse cx="20" cy="40" rx="12" ry="7" fill="#c9a84c"/>
-        <ellipse cx="20" cy="70" rx="12" ry="7" fill="#c9a84c"/>
-        <line x1="20" y1="77" x2="20" y2="88" stroke="#9B7A1A" stroke-width="1.5"/>
-      </svg>
-    </div>
-    <!-- Unta berjalan -->
-    <svg class="ramadan-camel" width="120" height="80" viewBox="0 0 130 90" aria-hidden="true">
-      <g fill="none">
-        <ellipse cx="65" cy="58" rx="33" ry="18" fill="#8B6310"/>
-        <rect x="82" y="32" width="13" height="28" rx="6" fill="#9B7318"/>
-        <ellipse cx="94" cy="28" rx="11" ry="8" fill="#8B6310"/>
-        <ellipse cx="104" cy="32" rx="5" ry="4" fill="#7a5508"/>
-        <circle cx="97" cy="24" r="2" fill="#3B1E00"/>
-        <ellipse cx="52" cy="43" rx="12" ry="10" fill="#9B7318"/>
-        <ellipse cx="74" cy="40" rx="11" ry="9" fill="#9B7318"/>
-        <g class="c-leg"><rect x="84" y="73" width="6" height="17" rx="3" fill="#7a5508"/></g>
-        <g class="c-leg2"><rect x="73" y="73" width="6" height="17" rx="3" fill="#7a5508"/></g>
-        <g class="c-leg2"><rect x="45" y="73" width="6" height="17" rx="3" fill="#7a5508"/></g>
-        <g class="c-leg"><rect x="34" y="73" width="6" height="17" rx="3" fill="#7a5508"/></g>
-        <path d="M30 58 Q19 63 21 70 Q27 66 31 61Z" fill="#8B6310"/>
-      </g>
-    </svg>
+
+    <p style="color:var(--gold); letter-spacing:0.3em; text-transform:uppercase; font-size:0.7rem; margin-bottom:1.5rem; z-index:10;">✦ Premium Automotive Parts</p>
+    <h1 class="hero-title">Performa Maksimal<br>Untuk <em id="event-text">Kendaraan</em> Anda.</h1>
+    <p style="max-width:500px; color:var(--muted); z-index:10;">Pusat penyedia suku cadang original berkualitas tinggi untuk keamanan berkendara yang tak tertandingi.</p>
+  </section>
+
+  <div class="content-grid">
+    <main>
+      <h2 style="font-family:'Playfair Display'; font-size:2.5rem; margin-bottom:1.5rem;">Tentang Kami</h2>
+      <div class="card">
+        <p>Visi kami sederhana: Memberikan pelayanan prima dan produk original untuk memastikan setiap perjalanan Anda aman dan nyaman.</p>
+      </div>
+    </main>
+    <aside>
+      <div class="card">
+        <h3 style="color:var(--gold); font-size:0.8rem; letter-spacing:0.2em; text-transform:uppercase;">Lokasi Toko</h3>
+        <p>Jl. Warakas Raya Gg. 2A No. 7B, Jakarta Utara</p>
+      </div>
+    </aside>
   </div>
 
-  <!-- ── IMLEK: Naga + Lentera Merah + Kembang Api ── -->
-  <div id="ev-imlek" style="position:absolute;inset:0;pointer-events:none;display:none;">
-    <!-- Lentera merah kiri -->
-    <div class="imlek-lantern" style="left:25px;animation-delay:0s;">
-      <svg width="50" height="105" viewBox="0 0 50 105">
-        <line x1="25" y1="0" x2="25" y2="12" stroke="#FFD700" stroke-width="2"/>
-        <rect x="9" y="10" width="32" height="6" rx="3" fill="#FFD700"/>
-        <ellipse cx="25" cy="62" rx="19" ry="32" fill="#CC0000"/>
-        <ellipse cx="25" cy="38" rx="17" ry="9" fill="#FFD700"/>
-        <ellipse cx="25" cy="86" rx="17" ry="9" fill="#FFD700"/>
-        <line x1="25" y1="95" x2="25" y2="104" stroke="#FFD700" stroke-width="2"/>
-        <line x1="17" y1="104" x2="33" y2="104" stroke="#FFD700" stroke-width="2"/>
-        <line x1="19" y1="34" x2="17" y2="90" stroke="#FF3300" stroke-width="1" opacity="0.4"/>
-        <line x1="25" y1="32" x2="25" y2="92" stroke="#FF3300" stroke-width="1" opacity="0.4"/>
-        <line x1="31" y1="34" x2="33" y2="90" stroke="#FF3300" stroke-width="1" opacity="0.4"/>
-      </svg>
-    </div>
-    <!-- Lentera merah kanan -->
-    <div class="imlek-lantern" style="right:25px;animation-delay:0.7s;">
-      <svg width="50" height="105" viewBox="0 0 50 105">
-        <line x1="25" y1="0" x2="25" y2="12" stroke="#FFD700" stroke-width="2"/>
-        <rect x="9" y="10" width="32" height="6" rx="3" fill="#FFD700"/>
-        <ellipse cx="25" cy="62" rx="19" ry="32" fill="#AA0000"/>
-        <ellipse cx="25" cy="38" rx="17" ry="9" fill="#FFD700"/>
-        <ellipse cx="25" cy="86" rx="17" ry="9" fill="#FFD700"/>
-        <line x1="25" y1="95" x2="25" y2="104" stroke="#FFD700" stroke-width="2"/>
-        <line x1="17" y1="104" x2="33" y2="104" stroke="#FFD700" stroke-width="2"/>
-        <line x1="19" y1="34" x2="17" y2="90" stroke="#FF3300" stroke-width="1" opacity="0.4"/>
-        <line x1="25" y1="32" x2="25" y2="92" stroke="#FF3300" stroke-width="1" opacity="0.4"/>
-        <line x1="31" y1="34" x2="33" y2="90" stroke="#FF3300" stroke-width="1" opacity="0.4"/>
-      </svg>
-    </div>
-    <!-- Kembang api -->
-    <div class="imlek-firework" style="top:8vh;left:10%;animation-delay:0s;">
-      <svg width="55" height="55" viewBox="0 0 60 60">
-        <g stroke="#FFD700" stroke-width="2" stroke-linecap="round" fill="none">
-          <line x1="30" y1="30" x2="30" y2="8"/><line x1="30" y1="30" x2="30" y2="52"/>
-          <line x1="30" y1="30" x2="8" y2="30"/><line x1="30" y1="30" x2="52" y2="30"/>
-          <line x1="30" y1="30" x2="14" y2="14"/><line x1="30" y1="30" x2="46" y2="46"/>
-          <line x1="30" y1="30" x2="46" y2="14"/><line x1="30" y1="30" x2="14" y2="46"/>
-        </g>
-        <circle cx="30" cy="30" r="4" fill="#FFD700"/>
-      </svg>
-    </div>
-    <div class="imlek-firework" style="top:6vh;right:12%;animation-delay:1s;">
-      <svg width="48" height="48" viewBox="0 0 60 60">
-        <g stroke="#FF4400" stroke-width="2" stroke-linecap="round" fill="none">
-          <line x1="30" y1="30" x2="30" y2="8"/><line x1="30" y1="30" x2="30" y2="52"/>
-          <line x1="30" y1="30" x2="8" y2="30"/><line x1="30" y1="30" x2="52" y2="30"/>
-          <line x1="30" y1="30" x2="14" y2="14"/><line x1="30" y1="30" x2="46" y2="46"/>
-          <line x1="30" y1="30" x2="46" y2="14"/><line x1="30" y1="30" x2="14" y2="46"/>
-        </g>
-        <circle cx="30" cy="30" r="3.5" fill="#FF6644"/>
-      </svg>
-    </div>
-    <div class="imlek-firework" style="top:14vh;left:42%;animation-delay:1.8s;">
-      <svg width="40" height="40" viewBox="0 0 60 60">
-        <g stroke="#FF8800" stroke-width="2" stroke-linecap="round" fill="none">
-          <line x1="30" y1="30" x2="30" y2="8"/><line x1="30" y1="30" x2="30" y2="52"/>
-          <line x1="30" y1="30" x2="8" y2="30"/><line x1="30" y1="30" x2="52" y2="30"/>
-          <line x1="30" y1="30" x2="14" y2="14"/><line x1="30" y1="30" x2="46" y2="46"/>
-        </g>
-        <circle cx="30" cy="30" r="3" fill="#FF8800"/>
-      </svg>
-    </div>
-    <!-- Naga merah terbang -->
-    <svg class="imlek-dragon" width="200" height="65" viewBox="0 0 200 65" aria-hidden="true">
-      <g fill="none">
-        <ellipse cx="145" cy="34" rx="40" ry="12" fill="#CC0000"/>
-        <ellipse cx="100" cy="36" rx="28" ry="10" fill="#DD1100"/>
-        <ellipse cx="65"  cy="38" rx="20" ry="9"  fill="#CC0000"/>
-        <ellipse cx="40"  cy="40" rx="14" ry="7"  fill="#DD1100"/>
-        <ellipse cx="22"  cy="42" rx="9"  ry="6"  fill="#CC0000"/>
-        <path d="M14 44 Q7 48 4 40 Q8 37 14 40Z" fill="#CC0000"/>
-        <ellipse cx="168" cy="30" rx="16" ry="12" fill="#DD1100"/>
-        <ellipse cx="185" cy="31" rx="8"  ry="6"  fill="#CC0000"/>
-        <circle cx="172" cy="25" r="3.5" fill="#FFD700"/>
-        <circle cx="172" cy="25" r="1.5" fill="#111"/>
-        <path d="M193 30 Q200 24 198 18 Q202 26 196 32Z" fill="#FF6600"/>
-        <path d="M148 24 Q158 6 170 12 Q158 18 155 28Z" fill="#BB0000"/>
-        <path d="M134 26 Q142 8 155 14 Q144 19 142 28Z" fill="#990000"/>
-        <polygon points="148,22 151,12 154,22" fill="#FFD700"/>
-        <polygon points="136,24 138,15 141,24" fill="#FFD700"/>
-        <polygon points="122,27 124,18 127,27" fill="#FFD700"/>
-        <line x1="155" y1="42" x2="150" y2="55" stroke="#880000" stroke-width="3" stroke-linecap="round"/>
-        <line x1="163" y1="41" x2="167" y2="55" stroke="#880000" stroke-width="3" stroke-linecap="round"/>
-        <line x1="135" y1="44" x2="130" y2="56" stroke="#880000" stroke-width="3" stroke-linecap="round"/>
-      </g>
-    </svg>
-  </div>
+  <footer>
+    <p>&copy; 2026 Rizal Kusuma (1324001). All Rights Reserved.</p>
+  </footer>
 
-</div>
-// ═══════ EVENT THEME SYSTEM ═══════
-const eventDivs = { natal: 'ev-natal', ramadan: 'ev-ramadan', imlek: 'ev-imlek' };
+  <script>
+    function setTheme(theme) {
+      const body = document.getElementById('body');
+      const eventText = document.getElementById('event-text');
+      body.classList.remove('theme-christmas', 'theme-ramadhan', 'theme-imlek');
+      
+      if (theme === 'christmas') {
+        body.classList.add('theme-christmas');
+        eventText.innerText = "Natal & Tahun Baru";
+      } else if (theme === 'ramadhan') {
+        body.classList.add('theme-ramadhan');
+        eventText.innerText = "Bulan Suci";
+      } else if (theme === 'imlek') {
+        body.classList.add('theme-imlek');
+        eventText.innerText = "Tahun Baru Imlek";
+      } else {
+        eventText.innerText = "Kendaraan";
+      }
+    }
 
-function setEvent(ev) {
-  const overlay = document.getElementById('event-overlay');
-  overlay.className = ev === 'off' ? 'ev-off' : '';
+    const cursor = document.getElementById('cursor');
+    const trail = document.getElementById('cursorTrail');
+    let mx = 0, my = 0, tx = 0, ty = 0;
 
-  Object.values(eventDivs).forEach(id => {
-    document.getElementById(id).style.display = 'none';
-  });
+    document.addEventListener('mousemove', e => {
+      mx = e.clientX; my = e.clientY;
+      cursor.style.left = mx + 'px'; cursor.style.top = my + 'px';
+    });
 
-  document.querySelectorAll('.event-btn').forEach(b => {
-    b.className = 'event-btn';
-  });
-  document.getElementById('ebtn-' + ev).classList.add('active-' + ev);
-
-  if (ev !== 'off' && eventDivs[ev]) {
-    document.getElementById(eventDivs[ev]).style.display = 'block';
-    if (ev === 'natal') spawnSnow();
-  }
-  localStorage.setItem('gp-event', ev);
-}
-
-function spawnSnow() {
-  const wrap = document.getElementById('snowWrap');
-  if (wrap.children.length > 0) return;
-  const chars = ['*', '+', '·', '*'];
-  for (let i = 0; i < 35; i++) {
-    const s = document.createElement('div');
-    s.className = 'snow-flake';
-    s.style.cssText = `
-      left:${Math.random()*100}%;
-      font-size:${10+Math.random()*12}px;
-      animation-duration:${6+Math.random()*9}s;
-      animation-delay:${Math.random()*9}s;
-      opacity:${0.35+Math.random()*0.55};
-    `;
-    s.textContent = chars[Math.floor(Math.random()*chars.length)];
-    wrap.appendChild(s);
-  }
-}
-
-// Restore event dari localStorage saat halaman dibuka
-(function() {
-  const saved = localStorage.getItem('gp-event') || 'natal';
-  setEvent(saved);
-})();
+    function animateTrail() {
+      tx += (mx - tx) * 0.12; ty += (my - ty) * 0.12;
+      trail.style.left = tx + 'px'; trail.style.top = ty + 'px';
+      requestAnimationFrame(animateTrail);
+    }
+    animateTrail();
+  </script>
+</body>
+</html>
